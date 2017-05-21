@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CREV</key>
+	<array/>
+	<key>Too much global state</key>
+	<string></string>
+	<key>make randomX a util</key>
+	<string></string>
+	<key>make blackbar exact length</key>
+	<string></string>
+	<key>Some unit testing for states / modes</key>
+	<string></string>
+	<key>Protocol for makeLab selfInit</key>
+	<string></string>
+	<key>make mainmenu initable</key>
+	<string></string>
+	<key>hi and session scores spaghetti</key>
+	<string></string>
+	<key>func for assigning pb in dc</key>
+	<string></string>
+	<key>figure out fucking anchorpoint PB</key>
+	<string></string>
+	<key>   </key>
+	<string></string>
+	<key>DESIGN</key>
+	<array/>
+	<key>Add top10 with names?</key>
+	<string></string>
+	<key>dynamic light</key>
+	<string></string>
+	<key>paralaxing</key>
+	<string></string>
+	<key>collect block mode?</key>
+	<string></string>
+	<key>game mode.. .two yellow boxes??</key>
+	<string></string>
+	<key>different shapes?</key>
+	<string></string>
+	<key>powerups / attacks?</key>
+	<string></string>
+	<key>challenge and cheat mode -- show icons next to hiscores</key>
+	<string></string>
+	<key>reset session button?</key>
+	<string></string>
+	<key>single space mode?</key>
+	<string></string>
+	<key>difficulty changes on fly as you move</key>
+	<string></string>
+	<key>  </key>
+	<string></string>
+	<key>TODO</key>
+	<array/>
+	<key>reward for being at top of screen</key>
+	<string></string>
+	<key>more fun stuff</key>
+	<string></string>
+	<key>fademode needs more variablility</key>
+	<string></string>
+	<key>MenuScene on pause</key>
+	<string></string>
+	<key>change themes (atari, neon, etc)</key>
+	<string></string>
+	<key>back button in devmode</key>
+	<string></string>
+	<key>icloud hiscores</key>
+	<string></string>
+	<key>sensitivity option (ipad)</key>
+	<string></string>
+	<key>GameCenter</key>
+	<string></string>
+	<key>       </key>
+	<string></string>
+	<key>turbo mode (guitar hero)</key>
+	<string></string>
+	<key>In-app menu</key>
+	<string></string>
+	<key>Options menu</key>
+	<string></string>
+	<key> </key>
+	<string></string>
+	<key>Eye animations</key>
+	<string></string>
+	<key>Death animation</key>
+	<string></string>
+	<key>Color stride animation</key>
+	<string></string>
+	<key>    </key>
+	<string></string>
+	<key>FIXME</key>
+	<array/>
+	<key>fademode vs fullmode</key>
+	<string></string>
+	<key>fix autopause</key>
+	<string></string>
+	<key>fix mode.score</key>
+	<string></string>
+	<key>hardcoded numbers to %screen</key>
+	<string></string>
+	<key>fullmode crash</key>
+	<string></string>
+	<key>ipad: pause leftright border</key>
+	<string></string>
+</dict>
+</plist>
