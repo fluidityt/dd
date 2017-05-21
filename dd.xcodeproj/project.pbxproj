@@ -18,7 +18,7 @@
 		4DAC0EAA1ED109990054EAC2 /* dev notes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4DAC0E981ED109990054EAC2 /* dev notes.plist */; };
 		4DAC0EAB1ED109990054EAC2 /* sprites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E991ED109990054EAC2 /* sprites.swift */; };
 		4DAC0EAC1ED109990054EAC2 /* labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E9A1ED109990054EAC2 /* labels.swift */; };
-		4DAC0EAD1ED109990054EAC2 /* utilz CLASS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E9B1ED109990054EAC2 /* utilz CLASS.swift */; };
+		4DAC0EAD1ED109990054EAC2 /* utilz SKCLASS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E9B1ED109990054EAC2 /* utilz SKCLASS.swift */; };
 		4DAC0EAE1ED109990054EAC2 /* utilz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E9C1ED109990054EAC2 /* utilz.swift */; };
 		4DAC0EAF1ED109990054EAC2 /* utilz FFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E9D1ED109990054EAC2 /* utilz FFS.swift */; };
 		4DAC0EB01ED109990054EAC2 /* WinbyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E9E1ED109990054EAC2 /* WinbyScene.swift */; };
@@ -46,18 +46,18 @@
 		4DAC0E901ED109990054EAC2 /* 1. Spawner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "1. Spawner.swift"; sourceTree = "<group>"; };
 		4DAC0E911ED109990054EAC2 /* 2. Hiscores.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "2. Hiscores.swift"; sourceTree = "<group>"; };
 		4DAC0E921ED109990054EAC2 /* 2. DoContact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "2. DoContact.swift"; sourceTree = "<group>"; };
-		4DAC0E931ED109990054EAC2 /* 2. GameScene Loop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "2. GameScene Loop.swift"; sourceTree = "<group>"; };
+		4DAC0E931ED109990054EAC2 /* 2. GameScene Loop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "2. GameScene Loop.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4DAC0E951ED109990054EAC2 /* 0. MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "0. MainMenuScene.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4DAC0E961ED109990054EAC2 /* 0. OptionScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "0. OptionScene.swift"; sourceTree = "<group>"; };
-		4DAC0E971ED109990054EAC2 /* 3. FailScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "3. FailScene.swift"; sourceTree = "<group>"; };
+		4DAC0E971ED109990054EAC2 /* 3. FailScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "3. FailScene.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4DAC0E981ED109990054EAC2 /* dev notes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "dev notes.plist"; sourceTree = "<group>"; };
-		4DAC0E991ED109990054EAC2 /* sprites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sprites.swift; sourceTree = "<group>"; };
+		4DAC0E991ED109990054EAC2 /* sprites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = sprites.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4DAC0E9A1ED109990054EAC2 /* labels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = labels.swift; sourceTree = "<group>"; };
-		4DAC0E9B1ED109990054EAC2 /* utilz CLASS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "utilz CLASS.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		4DAC0E9C1ED109990054EAC2 /* utilz.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = utilz.swift; sourceTree = "<group>"; };
+		4DAC0E9B1ED109990054EAC2 /* utilz SKCLASS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "utilz SKCLASS.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4DAC0E9C1ED109990054EAC2 /* utilz.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = utilz.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4DAC0E9D1ED109990054EAC2 /* utilz FFS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "utilz FFS.swift"; sourceTree = "<group>"; };
-		4DAC0E9E1ED109990054EAC2 /* WinbyScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WinbyScene.swift; sourceTree = "<group>"; };
-		4DAC0E9F1ED109990054EAC2 /* WinbySpawner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WinbySpawner.swift; sourceTree = "<group>"; };
+		4DAC0E9E1ED109990054EAC2 /* WinbyScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = WinbyScene.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		4DAC0E9F1ED109990054EAC2 /* WinbySpawner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = WinbySpawner.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4DAC0EA01ED109990054EAC2 /* WinbyJumper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WinbyJumper.swift; sourceTree = "<group>"; };
 		4DBF1BFF1ECFEA6400EF0CFC /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		4DBF1C001ECFEA6400EF0CFC /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -103,6 +103,7 @@
 				4DBF1C021ECFEA6400EF0CFC /* Assets.xcassets */,
 			);
 			name = junk;
+			path = ../Shared;
 			sourceTree = "<group>";
 		};
 		4DAC0EB31ED109AA0054EAC2 /* Fally Stuff */ = {
@@ -113,7 +114,7 @@
 				4DAC0E991ED109990054EAC2 /* sprites.swift */,
 				4DAC0E9C1ED109990054EAC2 /* utilz.swift */,
 				4DAC0E9D1ED109990054EAC2 /* utilz FFS.swift */,
-				4DAC0E9B1ED109990054EAC2 /* utilz CLASS.swift */,
+				4DAC0E9B1ED109990054EAC2 /* utilz SKCLASS.swift */,
 			);
 			name = "Fally Stuff";
 			sourceTree = "<group>";
@@ -167,7 +168,6 @@
 				4DAC0EB61ED10CA70054EAC2 /* Fally Blocks */,
 				4DAC0EB31ED109AA0054EAC2 /* Fally Stuff */,
 				4DAC0EB41ED109B90054EAC2 /* Winby Jump */,
-				4DAC0E8E1ED107FD0054EAC2 /* junk */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -196,8 +196,9 @@
 		4DBF1C1A1ECFEA6400EF0CFC /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				4DBF1C1B1ECFEA6400EF0CFC /* AppDelegate.swift */,
 				4DBF1C1D1ECFEA6400EF0CFC /* GameViewController.swift */,
+				4DBF1C1B1ECFEA6400EF0CFC /* AppDelegate.swift */,
+				4DAC0E8E1ED107FD0054EAC2 /* junk */,
 				4DBF1C1F1ECFEA6400EF0CFC /* Main.storyboard */,
 				4DBF1C221ECFEA6400EF0CFC /* Info.plist */,
 			);
@@ -332,7 +333,7 @@
 				4DAC0EB01ED109990054EAC2 /* WinbyScene.swift in Sources */,
 				4DAC0EAF1ED109990054EAC2 /* utilz FFS.swift in Sources */,
 				4DAC0EB21ED109990054EAC2 /* WinbyJumper.swift in Sources */,
-				4DAC0EAD1ED109990054EAC2 /* utilz CLASS.swift in Sources */,
+				4DAC0EAD1ED109990054EAC2 /* utilz SKCLASS.swift in Sources */,
 				4DAC0EA51ED109990054EAC2 /* 2. GameScene Loop.swift in Sources */,
 				4DAC0EA31ED109990054EAC2 /* 2. Hiscores.swift in Sources */,
 				4DAC0EAB1ED109990054EAC2 /* sprites.swift in Sources */,

@@ -46,8 +46,8 @@ struct Spawner {
         return CGFloat(randX) - localGS.frame.maxX
       }
       
-      let maxX = localGS.frame.maxX - emptyNode.size.width/2
-      let minX = localGS.frame.minX + emptyNode.size.width/2
+      let maxX = localGS.frame.maxX - emptyNode.size.halfWidth
+      let minX = localGS.frame.minX + emptyNode.size.halfWidth
       let randomX = subRandomX() // CGFloat(randy(Int(localGS.size.width)))
       
       if      randomX > maxX { emptyNode.position.x = maxX    }

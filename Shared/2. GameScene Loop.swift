@@ -33,6 +33,10 @@ extension GameScene {
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     pause()
   }
+  #elseif os(OSX)
+  override func mouseDown(with event: NSEvent) {
+    pause()
+  }
   #endif
   
   // MARK: - Update:
@@ -40,11 +44,11 @@ extension GameScene {
     guard let playa = g.player else { fatalError("issue with player") }
     
     let nh = g.notificationHeight
-    let bounds = (fullBottom: frame.minY + playa.size.height/2,
-                  bottom:     frame.midY + playa.size.height/2,
-                  top:        frame.maxY - playa.size.height/2,
-                  left:       frame.minX + playa.size.width/2,
-                  right:      frame.maxX - playa.size.width/2)
+    let bounds = (fullBottom: frame.minY + playa.size.halfHeight,
+                  bottom:     frame.midY + playa.size.halfHeight,
+                  top:        frame.maxY - playa.size.halfHeight,
+                  left:       frame.minX + playa.size.halfWidth,
+                  right:      frame.maxX - playa.size.halfWidth)
     
     if g.mode.full.value {
       if playa.position.y < bounds.fullBottom { playa.position.y = bounds.fullBottom }

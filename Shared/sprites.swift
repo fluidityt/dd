@@ -21,7 +21,7 @@ final class TouchPad: SKSpriteNode {
       assert(g.gameScene.size.height > 10) // Make sure we have a normal size.
     } else {
       color = .black
-      size = CGSize(width: scene.size.width, height: (scene.size.height/2))
+      size = CGSize(width: scene.size.width, height: (scene.size.halfHeight))
     }
     
     super.init(texture: nil, color: color, size: size)
@@ -58,12 +58,18 @@ final class Player: SKSpriteNode {
     // if color == .yellow { color = .green  }
   }
   
-  required init?(coder aDecoder: NSCoder) { fatalError() }
-    #if os(iOS)
-  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    // position = touches.first!.location(in: self.scene!)
+  func touch() {
+    
   }
+  #if os(iOS)
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+  // position = touches.first!.location(in: self.scene!)
+  touch()
+  }
+  #elseif os(OSX)
+  override func mouseDown(with event: NSEvent) { touch()  }
   #endif
+  required init?(coder aDecoder: NSCoder) { fatalError() }
 };
 
 

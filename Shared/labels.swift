@@ -8,7 +8,7 @@ final class PlayLabel: SKLabelNode {
   
   init(texter: String) {
     super.init(fontNamed: "Chalkduster")
-
+    
     self.text = {
       if      g.state == State.fail { return ">>> PLAY AGAIN :D <<<" }
       else if g.state == State.main { return "Play Game!"            }
@@ -17,16 +17,20 @@ final class PlayLabel: SKLabelNode {
     
     isUserInteractionEnabled = true
   }
-    #if os(iOS)
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+  
+  func touch() {
     if let scene = self.scene { if let view = scene.view {
       newGame()
       view.presentScene(g.gameScene)
       }
     }
   }
-  #endif
   
+  #if os(iOS)
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { touch() }
+  #elseif os(OSX)
+  override func mouseDown(with event: NSEvent) { touch()  }
+  #endif
   required init?(coder aDecoder: NSCoder) { fatalError("") };  override init() { super.init() }
 };
 
@@ -38,8 +42,8 @@ final class MainMenuLabel: SKLabelNode {
     self.text = ">>> MainMenu <<<"
     isUserInteractionEnabled = true
   }
-    #if os(iOS)
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+  
+  func touch() {
     guard let mm = g.mainmenu else { fatalError() }
     if let scene = self.scene { if let view = scene.view {
       mm.updateScore()
@@ -47,8 +51,12 @@ final class MainMenuLabel: SKLabelNode {
       }
     }
   }
-  #endif
   
+  #if os(iOS)
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { touch() }
+  #elseif os(OSX)
+  override func mouseDown(with event: NSEvent) { touch()  }
+  #endif
   required init?(coder aDecoder: NSCoder) { fatalError("") }; override init() { super.init() }
 };
 
@@ -60,12 +68,16 @@ final class OptionLabel: SKLabelNode {
     self.text = "Options"
     isUserInteractionEnabled = true
   }
-    #if os(iOS)
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-  }
-    
-  #endif
   
+  func touch() {
+    
+  }
+  
+  #if os(iOS)
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { touch()  }
+  #elseif os(OSX)
+  override func mouseDown(with event: NSEvent) { touch()  }
+  #endif
   required init?(coder aDecoder: NSCoder) { fatalError("") };  override init() { super.init() }
 };
 

@@ -45,11 +45,11 @@ class WinbySpawner {
     firstPoint   = CGPoint(x: findFirstPointX(), y: pointY),
     secondPoint  = CGPoint(x: findSecondPointX(), y: pointY),
     
-    randomSpeed = TimeInterval(baseSpeed + randy(speedMod)),
-    action1     = SKAction.move(to: firstPoint,  duration: randomSpeed),
-    action2     = SKAction.move(to: secondPoint, duration: randomSpeed),
-    sequence    = SKAction.sequence([action1, action2]),
-    repeating   = SKAction.repeatForever(sequence)
+    randomSpeed  = TimeInterval(baseSpeed + randy(speedMod)),
+    action1      = SKAction.move(to: firstPoint,  duration: randomSpeed),
+    action2      = SKAction.move(to: secondPoint, duration: randomSpeed),
+    sequence     = SKAction.sequence([action1, action2]),
+    repeating    = SKAction.repeatForever(sequence)
     
     enemy.run(repeating)
   }
@@ -64,9 +64,9 @@ class WinbySpawner {
     
     // Spawn on left?
     if player.position.y > frame.midX - frame.size.width/4 {
-      returnPos.x = frame.minX - node.size.width/2
+      returnPos.x = frame.minX - node.size.halfWidth
     }
-    else { returnPos.x = frame.maxX + node.size.width/2 }
+    else { returnPos.x = frame.maxX + node.size.halfWidth }
     
     return returnPos
   }
@@ -145,13 +145,13 @@ class DoContact2 {
       let enemyNode  = enemyPB .node as? SKSpriteNode else { fatalError("no nodes") }
     
     
-    let playRightX = gs.convert(CGPoint(x: playerNode.position.x + playerNode.size.width/2,
+    let playRightX = gs.convert(CGPoint(x: playerNode.position.x + playerNode.size.halfWidth,
                                         y: playerNode.position.y), from: playerNode).x
-    let enemLeftX  = gs.convert(CGPoint(x: enemyNode .position.x - enemyNode.size.width/2,
+    let enemLeftX  = gs.convert(CGPoint(x: enemyNode .position.x - enemyNode.size.halfWidth,
                                         y: enemyNode.position.y), from: enemyNode).x
-    let playLeftX  = gs.convert(CGPoint(x: playerNode.position.x - playerNode.size.width/2,
+    let playLeftX  = gs.convert(CGPoint(x: playerNode.position.x - playerNode.size.halfWidth,
                                         y: playerNode.position.y), from: playerNode).x
-    let enemRightX = gs.convert(CGPoint(x: enemyNode .position.x + enemyNode.size.width/2,
+    let enemRightX = gs.convert(CGPoint(x: enemyNode .position.x + enemyNode.size.halfWidth,
                                         y: enemyNode.position.y), from: enemyNode).x
     // CHeck left / right hit:
     if playRightX <= enemLeftX || playLeftX >= enemRightX {
@@ -184,7 +184,8 @@ class DoContact2 {
   }
   
 }
-// Not really a scene:
+
+// MARK: - Contact Del:
 extension WinbyScene: SKPhysicsContactDelegate {
   
   func didBegin(_ contact: SKPhysicsContact) {

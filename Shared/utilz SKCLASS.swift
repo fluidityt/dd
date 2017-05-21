@@ -4,22 +4,6 @@
 
 import SpriteKit
 
-
-  
-
-  
-final class Reference<T> {
-  var value: T
-  init(_ value: T) { self.value = value }
-}
-
-extension Reference where T : Bool {
-  var isOn:    Bool { if  self.value { return true } else { return false } }
-  var isOff:   Bool { if !self.value { return true } else { return false } }
-  var isFalse: Bool { if !self.value { return true } else { return false } }
-  var isTrue:  Bool { if  self.value { return true } else { return false } }
-}
-
 // MARK: - Toggler:
 public final class Toggler: SKLabelNode {
   
@@ -77,6 +61,28 @@ public final class Toggler: SKLabelNode {
 // MARK: - Adjustor:
 public final class Adjustor: SKLabelNode {
   
+  // Helper classes:
+  private final class AdjustorButtonLeft:  SKSpriteNode {
+    #if os(iOS)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if let node = parent {
+    if let adjustor = node.parent as? Adjustor { adjustor.number -= (1 * adjustor.step) }
+    }
+    }
+    #endif
+  }
+  
+  private final class AdjustorButtonRight: SKSpriteNode {
+    #if os(iOS)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if let node = parent {
+    if let adjustor = node.parent as? Adjustor { adjustor.number += (1 * adjustor.step) }
+    }
+    }
+    #endif
+  }
+
+  // Props:
   private let left  = AdjustorButtonLeft()
   private let right = AdjustorButtonRight()
   
@@ -114,7 +120,7 @@ public final class Adjustor: SKLabelNode {
   
   var step = 1.0
   
-  // Funcs:
+  // Init funcs:
   private func activateButtons() {
     left .isUserInteractionEnabled = true
     right.isUserInteractionEnabled = true
@@ -146,8 +152,8 @@ public final class Adjustor: SKLabelNode {
     right.size  = CGSize(width: 45, height: 45)
     right.color = .black
     
-    left .position.x = node.frame.minX + (left.frame.width/2) + 5
-    right.position.x = node.frame.maxX - (right.frame.width/2) - 5
+    left .position.x = node.frame.minX + (left.frame.halfWidth) + 5
+    right.position.x = node.frame.maxX - (right.frame.halfWidth) - 5
     
     right.zPosition += 50
   }
@@ -159,8 +165,8 @@ public final class Adjustor: SKLabelNode {
     numLabel.fontColor = .black
     txtLabel.verticalAlignmentMode = .center
     numLabel.verticalAlignmentMode = .center
-    txtLabel.position.y = node.frame.maxY - (txtLabel.frame.height/2)
-    numLabel.position.y = node.frame.minY + (numLabel.frame.height/2)
+    txtLabel.position.y = node.frame.maxY - (txtLabel.frame.halfHeight)
+    numLabel.position.y = node.frame.minY + (numLabel.frame.halfHeight)
   }
   
   init(text: String, refDouble: Reference<Double>, step: Double) {
@@ -174,6 +180,7 @@ public final class Adjustor: SKLabelNode {
       self.step = 1
     } else { self.step = step }
     
+    // What have I become?:
     setSizes()
     makeButtonsUI()
     makeLabelsUI()
@@ -190,24 +197,5 @@ public final class Adjustor: SKLabelNode {
   
   public required init?(coder aDecoder: NSCoder) { fatalError() }
   
-  private final class AdjustorButtonLeft:  SKSpriteNode {
-      #if os(iOS)
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      if let node = parent {
-        if let adjustor = node.parent as? Adjustor { adjustor.number -= (1 * adjustor.step) }
-      }
-    }
-    #endif
-  }
-  
-  private final class AdjustorButtonRight: SKSpriteNode {
-      #if os(iOS)
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-      if let node = parent {
-        if let adjustor = node.parent as? Adjustor { adjustor.number += (1 * adjustor.step) }
-      }
-    }
-    #endif
-  }
 };
 

@@ -60,8 +60,8 @@ class WinbyScene: SKScene {
   
   func putNodeOnTopOfAnother(put node1: SKSpriteNode, on node2: SKSpriteNode) {
     node1.position.y = node2.position.y
-    node1.position.y += node1.size.height/2
-    node1.position.y += node2.size.height/2
+    node1.position.y += node1.size.halfHeight
+    node1.position.y += node2.size.halfHeight
   }
 
   func jump() {
@@ -90,7 +90,7 @@ class WinbyScene: SKScene {
   func keepPlayerInBounds(){
     if player.position.y  < frame.minY {
       print("kpib")
-      player.position.y = frame.minY + player.size.height/2
+      player.position.y = frame.minY + player.size.halfHeight
     }
   }
   

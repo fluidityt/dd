@@ -42,9 +42,9 @@ final class MainMenuScene: SKScene {
   
   // ***COMPATIBILITY FOR iOS 9*** \\
   private var firstrun = true
-  
-  // MARK: - DMV:
-  override func didMove(to view: SKView) {
+
+  func sceneLoaded() {
+    
     guard firstrun else { return }
     
     g.state = .main
@@ -54,11 +54,20 @@ final class MainMenuScene: SKScene {
     UD.initUserDefaults()
     // UD.setHighScore(to: 116)
     UD.loadHighScore()
-  
+    
     selfInit()
     makeLabels()
     
     // ***COMPATIBILITY FOR iOS 9*** \\
     firstrun = false
+
+  }
+  #if os(iOS)
+  
+  #elseif os(OSX)
+  
+  #endif
+  // MARK: - DMV:
+  override func didMove(to view: SKView) {
   }
 };

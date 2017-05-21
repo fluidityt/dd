@@ -5,25 +5,6 @@
 import SpriteKit
 
 // MARK: - SK extensions:
-public extension SKLabelNode {
-  convenience init(text: String,
-                   fontColor: SKColor? = nil,
-                   fontNamed: String? = nil,
-                   fontSize: CGFloat? = nil,
-                   horizontalAlignment: SKLabelHorizontalAlignmentMode? = nil,
-                   position: CGPoint? = nil,
-                   verticalAlignment: SKLabelVerticalAlignmentMode? = nil) {
-    
-    self.init(fontNamed: "Chalkduster")
-    if let fc = fontColor { self.fontColor = fc }
-    if let fn = fontNamed { self.fontName  = fn }
-    if let fs = fontSize  { self.fontSize  = fs }
-    if let p  = position  { self.position  = p  }
-    if let ha = horizontalAlignment { self.horizontalAlignmentMode = ha }
-    if let va = verticalAlignment   { self.verticalAlignmentMode = va   }
-  }
-}
-
 public extension SKPhysicsBody {
   public func setMasks(cat: UInt32, cont: UInt32, col: UInt32) {
     self.categoryBitMask    = cat
@@ -74,6 +55,25 @@ public extension SKSpriteNode {
   }
 }
 
+public extension SKLabelNode {
+  convenience init(text: String,
+                   fontColor: SKColor? = nil,
+                   fontNamed: String? = nil,
+                   fontSize: CGFloat? = nil,
+                   horizontalAlignment: SKLabelHorizontalAlignmentMode? = nil,
+                   position: CGPoint? = nil,
+                   verticalAlignment: SKLabelVerticalAlignmentMode? = nil) {
+    
+    self.init(fontNamed: "Chalkduster")
+    if let fc = fontColor { self.fontColor = fc }
+    if let fn = fontNamed { self.fontName  = fn }
+    if let fs = fontSize  { self.fontSize  = fs }
+    if let p  = position  { self.position  = p  }
+    if let ha = horizontalAlignment { self.horizontalAlignmentMode = ha }
+    if let va = verticalAlignment   { self.verticalAlignmentMode = va   }
+  }
+}
+
 // MARK: - CG Extensions:
 public extension CGRect {
   
@@ -102,6 +102,9 @@ public extension CGRect {
       CGPoint(x : self.maxX, y : self.minY)
     )
   }
+  
+  var halfHeight: CGFloat { return self.height/2 }
+  var halfWidth:  CGFloat { return self.width/2  }
 }
 
 public extension CGSize {
@@ -111,17 +114,19 @@ public extension CGSize {
 
 public extension CGPoint {
   static let topLeft     = CGPoint(x : 0,   y : 1  )
-  static let topMiddle   = CGPoint(x : 0.5, y: 1   )
+  static let topMiddle   = CGPoint(x : 0.5, y : 1  )
   static let topRight    = CGPoint(x : 1,   y : 1  )
   static let middle      = CGPoint(x : 0.5, y : 0.5)
   static let middleLeft  = CGPoint(x : 0,   y : 0.5)
   static let middleRight = CGPoint(x : 1,   y : 0.5)
   static let bottomLeft  = CGPoint(x : 0,   y : 0  )
-  static let bottomMid   = CGPoint(x : 0.5, y: 0   )
+  static let bottomMid   = CGPoint(x : 0.5, y : 0  )
   static let bottomRight = CGPoint(x : 1,   y : 0  )
 }
 
 // MARK: - Base swift extensions:
+public final class Reference<T> { var value: T; init(_ value: T) { self.value = value } }
+
 public extension Bool {
   var isOn    : Bool { if  self { return true } else { return false } }
   var isOff   : Bool { if !self { return true } else { return false } }
@@ -157,10 +162,3 @@ public extension Int {
 public func randy(_ num: Int)     -> Int     { return Int(    arc4random_uniform(UInt32(num)))+1 }
 public func randy(_ num: CGFloat) -> CGFloat { return CGFloat(arc4random_uniform(UInt32(num)))+1 }
 public func randy(_ num: Double)  -> Double  { return Double( arc4random_uniform(UInt32(num)))+1 }
-
-
-
-
-
-
-
