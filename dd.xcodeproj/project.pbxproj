@@ -39,6 +39,8 @@
 		4DBF1C281ECFEA6400EF0CFC /* GameScene22.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DBF1C011ECFEA6400EF0CFC /* GameScene22.swift */; };
 		4DBF1C291ECFEA6400EF0CFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DBF1C021ECFEA6400EF0CFC /* Assets.xcassets */; };
 		4DBF1C2A1ECFEA6400EF0CFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DBF1C021ECFEA6400EF0CFC /* Assets.xcassets */; };
+		4DFBA91F1ED7E86300E94927 /* Winby2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFBA91E1ED7E86300E94927 /* Winby2.swift */; };
+		4DFBA9201ED7E86F00E94927 /* Winby2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFBA91E1ED7E86300E94927 /* Winby2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +76,7 @@
 		4DBF1C1D1ECFEA6400EF0CFC /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		4DBF1C201ECFEA6400EF0CFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4DBF1C221ECFEA6400EF0CFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4DFBA91E1ED7E86300E94927 /* Winby2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Winby2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +128,7 @@
 				4DAC0E9E1ED109990054EAC2 /* WinbyScene.swift */,
 				4DAC0E9F1ED109990054EAC2 /* WinbySpawner.swift */,
 				4DAC0EA01ED109990054EAC2 /* WinbyJumper.swift */,
+				4DFBA91E1ED7E86300E94927 /* Winby2.swift */,
 			);
 			name = "Winby Jump";
 			sourceTree = "<group>";
@@ -315,6 +319,7 @@
 			files = (
 				4DBF1C271ECFEA6400EF0CFC /* GameScene22.swift in Sources */,
 				4DBF1C0D1ECFEA6400EF0CFC /* GameViewController.swift in Sources */,
+				4DFBA91F1ED7E86300E94927 /* Winby2.swift in Sources */,
 				4DBF1C0B1ECFEA6400EF0CFC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,6 +334,7 @@
 				4DAC0EA11ED109990054EAC2 /* 1. GameScene Init.swift in Sources */,
 				4DAC0EAC1ED109990054EAC2 /* labels.swift in Sources */,
 				4DAC0EA21ED109990054EAC2 /* 1. Spawner.swift in Sources */,
+				4DFBA9201ED7E86F00E94927 /* Winby2.swift in Sources */,
 				4DBF1C1E1ECFEA6400EF0CFC /* GameViewController.swift in Sources */,
 				4DAC0EB01ED109990054EAC2 /* WinbyScene.swift in Sources */,
 				4DAC0EAF1ED109990054EAC2 /* utilz FFS.swift in Sources */,

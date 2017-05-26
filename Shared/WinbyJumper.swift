@@ -24,11 +24,9 @@ class Sprite: SKSpriteNode {
   #endif
 };
 
-
 class JumpScene: SKScene {
   
   typealias CollidedNode = (bodyA: SKSpriteNode, bodyB: SKSpriteNode)
-  
   
   // Proppy:
   var categories: [String: Set<Sprite>] = ["": Set<Sprite>()]
@@ -157,8 +155,6 @@ extension JumpScene {
       
     for contact in collidedNodes {
       print("hiii")
-      
-      
       
     }
   }
