@@ -23,6 +23,8 @@ class WinbyScene: SKScene {
   enemyStarting  = CGPoint.zero,
   nextPos = CGPoint(x: 0, y: 0),
   
+  highestPoint = 0,
+  
   dead = false
   
   // let:
@@ -153,3 +155,42 @@ extension WinbyScene {
     
   }
 };
+
+// MARK: - Winby2.0
+extension WinbyScene {
+
+  func setGravityAscend() {
+   physicsWorld.gravity = gravityUp
+  }
+  
+  func setGravityDescend() {
+   physicsWorld.gravity = gravityDown
+  }
+  
+  func shouldSpawnNewBlock() -> Bool {
+    // Check platform, spawn count, and line cleared:
+    
+    return false
+  }
+
+  func getPositionToSpawnAt() -> CGPoint {
+    
+    return CGPoint.zero
+  }
+  
+  func spawnNewBlock(at point: CGPoint) {
+    
+  }
+  
+  func shouldIncreaseHighscore() -> Bool {
+   // if player.platform.name == "0" { return false }
+    return false
+  }
+  
+  func increaseHighscore() {
+    self.highestPoint += 1
+    // Play sound...
+    // Do UD...
+  }
+  
+}

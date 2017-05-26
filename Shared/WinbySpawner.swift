@@ -140,22 +140,27 @@ class DoContact2 {
     
     let gs = localGS
     let (playerPB, enemyPB) = assignYellowBlack()
-    guard
-      let playerNode = playerPB.node as? SKSpriteNode,
-      let enemyNode  = enemyPB .node as? SKSpriteNode else { fatalError("no nodes") }
     
+    guard let playerNode = playerPB.node as? SKSpriteNode,
+          let enemyNode  = enemyPB .node as? SKSpriteNode else {
+            fatalError("no nodes")
+    }
     
     let playRightX = gs.convert(CGPoint(x: playerNode.position.x + playerNode.size.halfWidth,
                                         y: playerNode.position.y), from: playerNode).x
+    
     let enemLeftX  = gs.convert(CGPoint(x: enemyNode .position.x - enemyNode.size.halfWidth,
                                         y: enemyNode.position.y), from: enemyNode).x
+    
     let playLeftX  = gs.convert(CGPoint(x: playerNode.position.x - playerNode.size.halfWidth,
                                         y: playerNode.position.y), from: playerNode).x
+    
     let enemRightX = gs.convert(CGPoint(x: enemyNode .position.x + enemyNode.size.halfWidth,
                                         y: enemyNode.position.y), from: enemyNode).x
     // CHeck left / right hit:
     if playRightX <= enemLeftX || playLeftX >= enemRightX {
       gs.dead = true
+      // enter dead state!
       return
     }
     
