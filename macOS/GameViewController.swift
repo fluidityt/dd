@@ -26,7 +26,7 @@ class GameViewController: NSViewController {
       // g.view = view
     }
     
-    let scene = JumpScene(size: CGSize(width: 600, height: 500))
+    let scene = WinbyScene2(size: CGSize(width: 600, height: 500))
     scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
     // let scene = MainMenuScene(size: CGSize(width: 600, height: 1000)) // Why does this work?
     scene.scaleMode = .aspectFit

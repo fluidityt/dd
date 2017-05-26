@@ -14,7 +14,8 @@ final class Platform: SKSpriteNode {
   func finishUpdate() {
     positionLastFrame = self.position
   }
-}
+};
+
 
 final class Playa: SKSpriteNode {
   
@@ -30,8 +31,8 @@ final class Playa: SKSpriteNode {
     guard let platform = platform else { return }
     position.x += platform.deltaX
   }
-  
 };
+
 
 /// Design: have the world react to what the player does, or what the player collides with.
 class PlayerState: GKState {
@@ -42,6 +43,7 @@ class PlayerState: GKState {
     self.scene = player.scene! as! WinbyScene
   }
 };
+
 
 final class OnPlatform: PlayerState {
   override func didEnter(from previousState: GKState?) {
@@ -54,6 +56,7 @@ final class OnPlatform: PlayerState {
     player.keepOnPlatform()
   }
 };
+
 
 final class Ascending: PlayerState {
   
@@ -71,6 +74,7 @@ final class Ascending: PlayerState {
   }
 };
 
+
 final class Descending: PlayerState {
   
   override func didEnter(from previousState: GKState?) {
@@ -83,9 +87,11 @@ final class Descending: PlayerState {
   }
 };
 
+
 final class Dying: PlayerState {
   // Run animations
 };
+
 
 final class Dead: PlayerState {
   // End game and transition to replay scene:

@@ -41,6 +41,8 @@
 		4DBF1C2A1ECFEA6400EF0CFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4DBF1C021ECFEA6400EF0CFC /* Assets.xcassets */; };
 		4DFBA91F1ED7E86300E94927 /* Winby2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFBA91E1ED7E86300E94927 /* Winby2.swift */; };
 		4DFBA9201ED7E86F00E94927 /* Winby2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFBA91E1ED7E86300E94927 /* Winby2.swift */; };
+		4DFEEC501ED8C32400C17D5F /* WinbyScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFEEC4F1ED8C32400C17D5F /* WinbyScene2.swift */; };
+		4DFEEC511ED8C32400C17D5F /* WinbyScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFEEC4F1ED8C32400C17D5F /* WinbyScene2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +79,7 @@
 		4DBF1C201ECFEA6400EF0CFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4DBF1C221ECFEA6400EF0CFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4DFBA91E1ED7E86300E94927 /* Winby2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Winby2.swift; sourceTree = "<group>"; };
+		4DFEEC4F1ED8C32400C17D5F /* WinbyScene2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WinbyScene2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +132,7 @@
 				4DAC0E9F1ED109990054EAC2 /* WinbySpawner.swift */,
 				4DAC0EA01ED109990054EAC2 /* WinbyJumper.swift */,
 				4DFBA91E1ED7E86300E94927 /* Winby2.swift */,
+				4DFEEC4F1ED8C32400C17D5F /* WinbyScene2.swift */,
 			);
 			name = "Winby Jump";
 			sourceTree = "<group>";
@@ -318,6 +322,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4DBF1C271ECFEA6400EF0CFC /* GameScene22.swift in Sources */,
+				4DFEEC501ED8C32400C17D5F /* WinbyScene2.swift in Sources */,
 				4DBF1C0D1ECFEA6400EF0CFC /* GameViewController.swift in Sources */,
 				4DFBA91F1ED7E86300E94927 /* Winby2.swift in Sources */,
 				4DBF1C0B1ECFEA6400EF0CFC /* AppDelegate.swift in Sources */,
@@ -343,6 +348,7 @@
 				4DAC0EA51ED109990054EAC2 /* 2. GameScene Loop.swift in Sources */,
 				4DAC0EA31ED109990054EAC2 /* 2. Hiscores.swift in Sources */,
 				4DAC0EAB1ED109990054EAC2 /* sprites.swift in Sources */,
+				4DFEEC511ED8C32400C17D5F /* WinbyScene2.swift in Sources */,
 				4DBF1C1C1ECFEA6400EF0CFC /* AppDelegate.swift in Sources */,
 				4DAC0EA41ED109990054EAC2 /* 2. DoContact.swift in Sources */,
 				4DAC0EA81ED109990054EAC2 /* 0. OptionScene.swift in Sources */,

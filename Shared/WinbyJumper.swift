@@ -181,11 +181,13 @@ class Jump {
   }
   
   func somefunc() {
-    let colorSequence = SKKeyframeSequence(keyframeValues: [SKColor.green,
-                                                            SKColor.yellow,
-                                                            SKColor.red,
-                                                            SKColor.blue],
-                                           times: [0, 0.25, 0.5, 1])
+    let colorSequence = SKKeyframeSequence(
+      keyframeValues: [SKColor.green,
+                       SKColor.yellow,
+                       SKColor.red,
+                       SKColor.blue],
+      times: [0, 0.25, 0.5, 1]
+    )
   }
   
   

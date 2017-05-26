@@ -6,12 +6,12 @@ import SpriteKit
 
 class WinbySpawner {
   
-  private var localGS = WinbyScene()
+  private var scene = WinbyScene()
   private var spawnCount = 0
   
   // convenience:
-  private var player: SKSpriteNode { return localGS.player }
-  private var frame: CGRect        { return localGS.frame }
+  private var player: SKSpriteNode { return scene.player }
+  private var frame: CGRect        { return scene.frame }
   
   // Difficulty:
   private let
@@ -21,11 +21,11 @@ class WinbySpawner {
   sizeMod   = 150
   
   // Init:
-  init(gs: WinbyScene) { self.localGS = gs }
+  init(gs: WinbyScene) { self.scene = gs }
   
   // Funky:
   private func addToHash(enemy: SKSpriteNode) {
-    localGS.enemyHash[enemy.name!] = enemy
+    scene.enemyHash[enemy.name!] = enemy
   }
   
   private func animate(enemy: SKSpriteNode) {
@@ -41,7 +41,7 @@ class WinbySpawner {
     }
     
     let
-    pointY       = localGS.nextPos.y,
+    pointY       = scene.nextPos.y,
     firstPoint   = CGPoint(x: findFirstPointX(), y: pointY),
     secondPoint  = CGPoint(x: findSecondPointX(), y: pointY),
     
@@ -84,13 +84,13 @@ class WinbySpawner {
     }
     addToHash(enemy: enemy)
     
-    localGS.platformPlayerIsOn = enemy
-    localGS.playerIsOnPlatform = true
+    scene.platformPlayerIsOn = enemy
+    scene.playerIsOnPlatform = true
     
-    localGS.nextPos = pickNextPos(spawnedNode: enemy)
-    localGS.addChild(enemy)
-    localGS.addChild(player)
-    localGS.putNodeOnTopOfAnother(put: player, on: enemy)
+    scene.nextPos = pickNextPos(spawnedNode: enemy)
+    scene.addChild(enemy)
+    scene.addChild(player)
+    scene.putNodeOnTopOfAnother(put: player, on: enemy)
   }
   
   func blackLine(pos: CGPoint) {
@@ -114,19 +114,19 @@ class WinbySpawner {
     }
     addToHash(enemy: enemy)
     
-    localGS.nextPos = pickNextPos(spawnedNode: enemy)
-    localGS.addChild(enemy)
+    scene.nextPos = pickNextPos(spawnedNode: enemy)
+    scene.addChild(enemy)
   }
 }
 
 class DoContact2 {
-  var localGS = WinbyScene(size: CGSize.zero)
+  var scene = WinbyScene(size: CGSize.zero)
   var contact = SKPhysicsContact()
-  var player: SKSpriteNode { return localGS.player }
+  var player: SKSpriteNode { return scene.player }
   
   init(contact: SKPhysicsContact, gameScene: WinbyScene) {
     self.contact = contact
-    localGS = gameScene
+    scene = gameScene
   }
   
   private func assignYellowBlack() ->  (player: SKPhysicsBody, enemy: SKPhysicsBody) {
@@ -138,7 +138,7 @@ class DoContact2 {
   
   func blackAndYellow() {
     
-    let gs = localGS
+    let gs = scene
     let (playerPB, enemyPB) = assignYellowBlack()
     
     guard let playerNode = playerPB.node as? SKSpriteNode,
@@ -157,6 +157,7 @@ class DoContact2 {
     
     let enemRightX = gs.convert(CGPoint(x: enemyNode .position.x + enemyNode.size.halfWidth,
                                         y: enemyNode.position.y), from: enemyNode).x
+    
     // CHeck left / right hit:
     if playRightX <= enemLeftX || playLeftX >= enemRightX {
       gs.dead = true
@@ -185,10 +186,8 @@ class DoContact2 {
     else {
       gs.dead = true
     }
-    
   }
-  
-}
+};
 
 // MARK: - Contact Del:
 extension WinbyScene: SKPhysicsContactDelegate {
@@ -200,10 +199,9 @@ extension WinbyScene: SKPhysicsContactDelegate {
     let contactedCategories = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
     
     switch contactedCategories {
-    case categoryPlayer | categoryEnemy:
-      doContact.blackAndYellow()
-    default:
-      ()
+      case categoryPlayer | categoryEnemy:
+        doContact.blackAndYellow()
+      default: ()
     }
   }
   
@@ -211,4 +209,4 @@ extension WinbyScene: SKPhysicsContactDelegate {
     //self.contact = contact
   }
   
-}
+};
