@@ -3,7 +3,7 @@
 //  ffs2222
 
 import SpriteKit
-
+/*
 class Sprite: SKSpriteNode {
   var category = ""
   var contact = ""
@@ -206,4 +206,6 @@ class Jump {
   func update() {
     
   }
+ 
 }
+ */

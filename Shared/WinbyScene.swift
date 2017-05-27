@@ -8,7 +8,7 @@ import SpriteKit
 
 let categoryPlayer = UInt32(1)
 let categoryEnemy  = UInt32(2)
-
+/*
 class WinbyScene: SKScene {
   
   // var:
@@ -194,3 +194,4 @@ extension WinbyScene {
   }
   
 }
+ */

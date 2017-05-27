@@ -3,7 +3,7 @@
 //  ffs2222
 
 import SpriteKit
-
+/*
 class WinbySpawner {
   
   private var scene = WinbyScene()
@@ -210,3 +210,4 @@ extension WinbyScene: SKPhysicsContactDelegate {
   }
   
 };
+*/

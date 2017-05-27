@@ -43,6 +43,9 @@
 		4DFBA9201ED7E86F00E94927 /* Winby2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFBA91E1ED7E86300E94927 /* Winby2.swift */; };
 		4DFEEC501ED8C32400C17D5F /* WinbyScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFEEC4F1ED8C32400C17D5F /* WinbyScene2.swift */; };
 		4DFEEC511ED8C32400C17D5F /* WinbyScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DFEEC4F1ED8C32400C17D5F /* WinbyScene2.swift */; };
+		4DFEEC521ED96FC600C17D5F /* utilz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E9C1ED109990054EAC2 /* utilz.swift */; };
+		4DFEEC531ED96FFA00C17D5F /* utilz FFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E9D1ED109990054EAC2 /* utilz FFS.swift */; };
+		4DFEEC541ED96FFF00C17D5F /* utilz SKCLASS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E9B1ED109990054EAC2 /* utilz SKCLASS.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -321,9 +324,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DFEEC521ED96FC600C17D5F /* utilz.swift in Sources */,
 				4DBF1C271ECFEA6400EF0CFC /* GameScene22.swift in Sources */,
+				4DFEEC541ED96FFF00C17D5F /* utilz SKCLASS.swift in Sources */,
 				4DFEEC501ED8C32400C17D5F /* WinbyScene2.swift in Sources */,
 				4DBF1C0D1ECFEA6400EF0CFC /* GameViewController.swift in Sources */,
+				4DFEEC531ED96FFA00C17D5F /* utilz FFS.swift in Sources */,
 				4DFBA91F1ED7E86300E94927 /* Winby2.swift in Sources */,
 				4DBF1C0B1ECFEA6400EF0CFC /* AppDelegate.swift in Sources */,
 			);

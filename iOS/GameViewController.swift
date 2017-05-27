@@ -26,7 +26,7 @@ class GameViewController: UIViewController {
       // g.view = view
     }
     
-    let scene = GameScene2(size: CGSize(width: 600, height: 1000))
+    let scene = WinbyScene2(size: CGSize(width: 600, height: 1000))
     // let scene = MainMenuScene(size: CGSize(width: 600, height: 1000)) // Why does this work?
     scene.scaleMode = .aspectFit
     view.presentScene(scene)

@@ -4,11 +4,22 @@
 import SpriteKit
 import GameplayKit
 
-let gPlaya = Playa()
-
 final class Platform: SKSpriteNode {
   var positionLastFrame = CGPoint.zero
   var deltaX: CGFloat { return self.position.x - self.positionLastFrame.x }
+  var id: Int { return Int(name!)! }
+  
+  func clearBitMask() {
+    assert(physicsBody != nil)
+    physicsBody!.categoryBitMask = UInt32(0)
+  }
+
+  func setBitMask() {
+    func clearBitMask() {
+      assert(physicsBody != nil)
+      physicsBody!.categoryBitMask = UInt32(2)
+    }
+  }
   
   // Call in DFU():
   func finishUpdate() {
@@ -19,12 +30,10 @@ final class Platform: SKSpriteNode {
 
 final class Playa: SKSpriteNode {
   
-  lazy var stateMachine: GKStateMachine = { GKStateMachine(states: [OnPlatform(self), Ascending(self), Descending(self), Dying(self), Dead(self)]) } ()
-  var currentState: GKState? { return stateMachine.currentState }
+  lazy var stateMachine: GKStateMachine = { GKStateMachine(states: [OnPlatform(self), Ascending(self), DoubleAscending(self), Descending(self), Dying(self), Dead(self)]) } ()
+  var      currentState: GKState? { return stateMachine.currentState }
 
   var platform: Platform?
-
-  var positionLastFrame = CGPoint.zero
   
   /// This should only be called once, in update:
   func keepOnPlatform() {
@@ -32,28 +41,23 @@ final class Playa: SKSpriteNode {
     position.x += platform.deltaX
   }
   
-  // I'm hemming and hawing.
-  func jump() {
-    
-    // if currentState == doubleJump { return }
-    // else if currentState == jump { enter(doubleJump) }
-    // else { enter(jump) }
-    
-    stateMachine.enter(Ascending.self)
+  func enter(_ stateClass: AnyClass) {
+      stateMachine.enter(stateClass)
   }
   
-  
+  func jump() {
+    if currentState is DoubleAscending { return }
+    else if currentState is Ascending { enter(DoubleAscending.self) }
+    else { enter(Ascending.self) }
+  }
 };
 
 
 /// Design: have the world react to what the player does, or what the player collides with.
 class PlayerState: GKState {
-  let player: Playa
-  let scene: WinbyScene
-  init(_ player: Playa) {
-    self.player = player
-    self.scene = player.scene! as! WinbyScene
-  }
+  var scene: WinbyScene2 { return player.scene! as! WinbyScene2 }
+  let player: Playa 
+  init(_ player: Playa) { self.player = player }
   
   /// Because guards are annoying sometimes.
   func assertPlatformAndPB() {
@@ -63,48 +67,56 @@ class PlayerState: GKState {
 };
 
 
+/// Platform must be updated via contact (or other) handler prior to this being entered.
 final class OnPlatform: PlayerState {
   
   override func didEnter(from previousState: GKState?) {
-    assertPlatformAndPB()
+    assert(previousState is Descending || previousState is DoubleDescending || previousState == nil)
+    guard let platform = player.platform else { fatalError("must have platform") }
     
-    player.platform!.physicsBody!.categoryBitMask = UInt32(0) // FIXME: Better masks.
+    platform.clearBitMask()
     
-    if scene.shouldIncreaseHighscore() { scene.increaseHighscore() }
-    if scene.shouldSpawnNewBlock()     { scene.spawnNewBlock(at: scene.getPositionToSpawnAt()) }
+    // Handle scoring and spawning next spawn:
+    if scene.shouldSpawnNewPlatform() {
+      scene.increaseHighscore()
+      scene.spawnPlatform(at: scene.getPositionToSpawnAt())
+    }
   }
   
   override func update(deltaTime seconds: TimeInterval) {
-    // Platform will be updated via contact handler.
     player.keepOnPlatform()
   }
 };
 
 
 class Ascending: PlayerState {
+  // Should be protected:
   
-  private var positionToCompare = CGPoint()
+  var positionToCompare = CGPoint()
+  var nextState: AnyClass = Descending.self
   
-  private func playerLeavesPlatform() {
+  func leavePlatform(player: Playa) {
+    // FIXME: assertPlatformAndPB()
     player.position.y += 1                                    // Make sure we don't contat
     player.platform!.physicsBody!.categoryBitMask = UInt32(2) // FIXME: Better masks.
     player.platform = nil
   }
   
-  private func playerAppliesImpulse() {
+  func applyImpulse(player: Playa) {
     player.physicsBody = SKPhysicsBody()
-    player.physicsBody!.applyImpulse(CGVector())
+    player.physicsBody!.applyImpulse(scene.JUMP_POWER)
     // Sound effect!
   }
   
   // Should only be called during update
   override func didEnter(from previousState: GKState?) {
-    assertPlatformAndPB()
+    // FIXME: assertPlatformAndPB()
+    // FIXME: assert(previousState is OnPlatform)
     
     scene.setGravityAscend()
-    
-    playerLeavesPlatform()
-    playerAppliesImpulse()
+  
+    leavePlatform(player: player)
+    applyImpulse(player: player)
     
     positionToCompare = player.position
   }
@@ -113,7 +125,7 @@ class Ascending: PlayerState {
 
     // Check for descension so can change state:
     if player.position.y < positionToCompare.y {
-      player.stateMachine.enter(Descending.self)
+      player.stateMachine.enter(nextState)
     } else { positionToCompare = player.position }
   }
 };
@@ -122,9 +134,10 @@ class Ascending: PlayerState {
 final class DoubleAscending: Ascending {
   override func didEnter(from previousState: GKState?) {
     assert(previousState is Ascending)
+    nextState = DoubleDescending.self
     
-    
-    
+    applyImpulse(player: player)
+    positionToCompare = player.position
   }
 };
 
@@ -132,12 +145,16 @@ final class DoubleAscending: Ascending {
 final class Descending: PlayerState {
   
   override func didEnter(from previousState: GKState?) {
+    assert(previousState is Ascending)
     scene.setGravityDescend()
   }
-  
-  override func update(deltaTime seconds: TimeInterval) {
-  // Contact happens AFTER this will be checked... and the next state will be called from
-  // contact.
+};
+
+
+final class DoubleDescending: PlayerState {
+  override func didEnter(from previousState: GKState?) {
+    assert(previousState is DoubleAscending)
+    scene.setGravityDescend()
   }
 };
 
@@ -149,4 +166,8 @@ final class Dying: PlayerState {
 
 final class Dead: PlayerState {
   // End game and transition to replay scene:
+  override func didEnter(from previousState: GKState?) {
+    scene.view?.presentScene(SKScene()) // FIXME: lol
+  }
 };
+
