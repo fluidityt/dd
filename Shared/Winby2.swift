@@ -31,6 +31,18 @@ final class Playa: SKSpriteNode {
     guard let platform = platform else { return }
     position.x += platform.deltaX
   }
+  
+  // I'm hemming and hawing.
+  func jump() {
+    
+    // if currentState == doubleJump { return }
+    // else if currentState == jump { enter(doubleJump) }
+    // else { enter(jump) }
+    
+    stateMachine.enter(Ascending.self)
+  }
+  
+  
 };
 
 
@@ -42,11 +54,22 @@ class PlayerState: GKState {
     self.player = player
     self.scene = player.scene! as! WinbyScene
   }
+  
+  /// Because guards are annoying sometimes.
+  func assertPlatformAndPB() {
+    assert(player.platform != nil, "platform should be assigned in contact")
+    assert(player.platform!.physicsBody != nil, "pb should be assigned from ascending")
+  }
 };
 
 
 final class OnPlatform: PlayerState {
+  
   override func didEnter(from previousState: GKState?) {
+    assertPlatformAndPB()
+    
+    player.platform!.physicsBody!.categoryBitMask = UInt32(0) // FIXME: Better masks.
+    
     if scene.shouldIncreaseHighscore() { scene.increaseHighscore() }
     if scene.shouldSpawnNewBlock()     { scene.spawnNewBlock(at: scene.getPositionToSpawnAt()) }
   }
@@ -58,19 +81,50 @@ final class OnPlatform: PlayerState {
 };
 
 
-final class Ascending: PlayerState {
+class Ascending: PlayerState {
   
+  private var positionToCompare = CGPoint()
+  
+  private func playerLeavesPlatform() {
+    player.position.y += 1                                    // Make sure we don't contat
+    player.platform!.physicsBody!.categoryBitMask = UInt32(2) // FIXME: Better masks.
+    player.platform = nil
+  }
+  
+  private func playerAppliesImpulse() {
+    player.physicsBody = SKPhysicsBody()
+    player.physicsBody!.applyImpulse(CGVector())
+    // Sound effect!
+  }
+  
+  // Should only be called during update
   override func didEnter(from previousState: GKState?) {
-    player.positionLastFrame = player.position // Technically, this can only happen on jump, which is during update.
+    assertPlatformAndPB()
+    
     scene.setGravityAscend()
+    
+    playerLeavesPlatform()
+    playerAppliesImpulse()
+    
+    positionToCompare = player.position
   }
   
   override func update(deltaTime seconds: TimeInterval) {
-  
-    if player.position.y < player.positionLastFrame.y {
+
+    // Check for descension so can change state:
+    if player.position.y < positionToCompare.y {
       player.stateMachine.enter(Descending.self)
-    }
-    else { player.positionLastFrame = player.position }
+    } else { positionToCompare = player.position }
+  }
+};
+
+
+final class DoubleAscending: Ascending {
+  override func didEnter(from previousState: GKState?) {
+    assert(previousState is Ascending)
+    
+    
+    
   }
 };
 

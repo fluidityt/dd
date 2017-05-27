@@ -86,7 +86,8 @@ extension WinbyScene2 {
 }
 
 // MARK: -  Gravity funcs:
-extension WinbyScene2 {  // Useless funcs are useless? Or coder brain-fart proof?
+// Useless funcs are useless? Or coder brain-fart proof?
+extension WinbyScene2 {
   func setGravityAscend() {
     physicsWorld.gravity = GRAVITY_UP
   }
@@ -150,6 +151,7 @@ extension WinbyScene2 {
   }
   
   override func didFinishUpdate() {
+    
     
   }
 }
