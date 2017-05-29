@@ -12,15 +12,15 @@ class WinbyScene2 : SKScene {
   // MARK: - Sprite data:
   let player = Playa()
   var platforms = ["": Platform()]
+  var curFrame = 0.0
   
   // MARK: - Gravity / Physics data:
   let
   GRAVITY_UP   = CGVector(dx: 0,   dy: -20),
   GRAVITY_DOWN = CGVector(dx: 0,   dy: -30),
-  JUMP_POWER   = CGVector(dx: 0,   dy: 55 ),
+  JUMP_POWER   = CGVector(dx: 0,   dy: 100 ),
   VEC_LEFT     = CGVector(dx: -10, dy: 0  ),
-  VEC_RIGHT    = CGVector(dx: 10,  dy: 0  ),
-  JUMP_HEIGHT  = CGVector(dx: 0,   dy: 30 )
+  VEC_RIGHT    = CGVector(dx: 10,  dy: 0  )
   
   // MARK: - Highscore data:
   var
@@ -53,11 +53,13 @@ extension WinbyScene2 {
 }
 
 // MARK: - Config funcs:
-extension WinbyScene2 {
+extension WinbyScene2: SKPhysicsContactDelegate {
   
   private func initSelf() {
     anchorPoint = CGPoint(x: 0.5, y: 0.5)
-    
+    physicsBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+    physicsWorld.gravity = GRAVITY_UP
+    physicsWorld.contactDelegate = self
   }
   
   private func initPlatform() {
@@ -66,7 +68,11 @@ extension WinbyScene2 {
                                          size:        SIZE)
     newPlatform.name = "0"
     newPlatform.physicsBody = SKPhysicsBody(rectangleOf: SIZE)
-    newPlatform.physicsBody?.isDynamic = false
+    newPlatform.physicsBody?.categoryBitMask = UInt32(2)
+    newPlatform.physicsBody?.contactTestBitMask = UInt32(1)
+    newPlatform.physicsBody!.isDynamic = false
+    newPlatform.position.y = frame.minY
+    newPlatform.position.y += newPlatform.size.halfHeight
     
     addPlatformToDict(newPlatform)
     addChild(newPlatform)
@@ -75,12 +81,16 @@ extension WinbyScene2 {
   private func initPlayer() {
     assert(platforms["0"] != nil)
     addChild(player)
-   
-    player.platform = platforms["0"]!
+  
+    player.name = "sup"
     player.size = CGSize(width: 50, height: 50)
+    player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
+    player.physicsBody?.categoryBitMask = UInt32(1)
+    player.physicsBody?.contactTestBitMask = UInt32(2)
+    player.platform = platforms["0"]!
     player.color = .yellow
     player.position = platforms["0"]!.position
-    player.position.y += player.platform!.size.height + 1
+    player.position.y += player.platform!.size.height + 10
     player.enter(OnPlatform.self)
   }
   
@@ -176,11 +186,11 @@ extension WinbyScene2 {
     
     // How about a while loop in a .run? Will that fetch fresh data?
     if lastSideSpawnedOn == RIGHT {
-      firstX  = frame.minX
-      secondX = frame.maxX
+      firstX  = frame.minX - platform.size.halfWidth
+      secondX = frame.maxX + platform.size.halfWidth
     } else {
-      firstX  = frame.maxX
-      secondX = frame.minX
+      firstX  = frame.maxX + platform.size.halfWidth
+      secondX = frame.minX - platform.size.halfWidth
     }
     
     let
@@ -215,16 +225,18 @@ extension WinbyScene2 {
 extension WinbyScene2 {
   #if os(iOS)
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    player.jump()
+    player.jump(vector: JUMP_POWER)
   }
   #elseif os(OSX)
-  override func mouseDown(with event: NSEvent) {
-  player.jump()
+  override func mouseDown(with event: NSEvent){
+  
+  player.jump(vector: JUMP_POWER)
   }
+  
   #endif
   
   override func update(_ currentTime: TimeInterval) {
-  
+  curFrame += 1
     thisFrameTime = currentTime
     player.stateMachine.update(deltaTime: deltaTime)
   }
@@ -232,5 +244,28 @@ extension WinbyScene2 {
   override func didFinishUpdate() {
     
     for platform in platforms.values { platform.finishUpdate() }
+  }
+}
+
+// MARK: - Contact: 
+extension WinbyScene2 {
+  
+  private func assignNodeOfType<T>(_ type: T.Type, from contact: SKPhysicsContact) -> T? {
+    assert(type is SKNode.Type)
+    if let foundA = contact.bodyA.node as? T      { print("found a");return foundA  }
+    if let foundB =  contact.bodyB.node as? T { print("found b");return foundB }
+    else               { return nil         }
+  }
+  
+  func didBegin(_ contact: SKPhysicsContact) {
+    
+    switch (contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask) {
+    case UInt32(3):
+      guard let lPlayer   = assignNodeOfType(Playa.self, from: contact) else { return }
+      guard let lPlatform = assignNodeOfType(Platform.self, from: contact) else { return }
+      if lPlayer.platform === lPlatform  {print("ok"); return}
+      else { print("couldn't find player or platform") }
+    default: ()
+    }
   }
 }

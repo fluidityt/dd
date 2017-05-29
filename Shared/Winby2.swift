@@ -34,6 +34,8 @@ final class Playa: SKSpriteNode {
   var      currentState: GKState? { return stateMachine.currentState }
 
   var platform: Platform?
+
+  var jumps = 2
   
   /// This should only be called once, in update:
   func keepOnPlatform() {
@@ -45,7 +47,10 @@ final class Playa: SKSpriteNode {
       stateMachine.enter(stateClass)
   }
   
-  func jump() {
+  func jump(vector: CGVector) {
+
+    if jumps <= 0 { return }
+    
     if currentState is DoubleAscending { return }
     else if currentState is Ascending { enter(DoubleAscending.self) }
     else { enter(Ascending.self) }
@@ -74,7 +79,8 @@ final class OnPlatform: PlayerState {
     assert(previousState is Descending || previousState is DoubleDescending || previousState == nil)
     guard let platform = player.platform else { fatalError("must have platform") }
     
-    platform.clearBitMask()
+    player.jumps = 2
+    //platform.clearBitMask()
     
     // Handle scoring and spawning next spawn:
     if scene.shouldSpawnNewPlatform() {
@@ -84,7 +90,7 @@ final class OnPlatform: PlayerState {
   }
   
   override func update(deltaTime seconds: TimeInterval) {
-    player.keepOnPlatform()
+    // player.keepOnPlatform()
   }
 };
 
@@ -97,13 +103,14 @@ class Ascending: PlayerState {
   
   func leavePlatform(player: Playa) {
     // FIXME: assertPlatformAndPB()
-    player.position.y += 1                                    // Make sure we don't contat
-    player.platform!.physicsBody!.categoryBitMask = UInt32(2) // FIXME: Better masks.
+    player.position.y += 10                                    // Make sure we don't contat
+    player.jumps -= 1
+    // player.platform!.physicsBody!.categoryBitMask = UInt32(2) // FIXME: B etter masks.
     player.platform = nil
   }
   
   func applyImpulse(player: Playa) {
-    player.physicsBody = SKPhysicsBody()
+    player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
     player.physicsBody!.applyImpulse(scene.JUMP_POWER)
     // Sound effect!
   }
@@ -136,6 +143,7 @@ final class DoubleAscending: Ascending {
     assert(previousState is Ascending)
     nextState = DoubleDescending.self
     
+    player.jumps -= 1
     applyImpulse(player: player)
     positionToCompare = player.position
   }
