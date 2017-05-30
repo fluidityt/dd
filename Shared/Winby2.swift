@@ -106,7 +106,7 @@ class Ascending: PlayerState {
     player.position.y += 10                                    // Make sure we don't contat
     player.jumps -= 1
     // player.platform!.physicsBody!.categoryBitMask = UInt32(2) // FIXME: B etter masks.
-    player.platform = nil
+    // player.platform = nil
   }
   
   func applyImpulse(player: Playa) {
@@ -154,7 +154,7 @@ final class Descending: PlayerState {
   
   override func didEnter(from previousState: GKState?) {
     assert(previousState is Ascending)
-    scene.setGravityDescend()
+ //   scene.setGravityDescend()
   }
 };
 
@@ -162,7 +162,7 @@ final class Descending: PlayerState {
 final class DoubleDescending: PlayerState {
   override func didEnter(from previousState: GKState?) {
     assert(previousState is DoubleAscending)
-    scene.setGravityDescend()
+    // scene.setGravityDescend()
   }
 };
 

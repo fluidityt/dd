@@ -85,8 +85,8 @@ extension WinbyScene2: SKPhysicsContactDelegate {
     player.name = "sup"
     player.size = CGSize(width: 50, height: 50)
     player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
-    player.physicsBody?.categoryBitMask = UInt32(1)
-    player.physicsBody?.contactTestBitMask = UInt32(2)
+    player.physicsBody!.categoryBitMask = UInt32(1)
+    player.physicsBody!.contactTestBitMask = UInt32(2)
     player.platform = platforms["0"]!
     player.color = .yellow
     player.position = platforms["0"]!.position
@@ -208,9 +208,10 @@ extension WinbyScene2 {
   }
   
   func spawnPlatform(at pos: CGPoint) {
-    
+    print("hi new p")
     let newPlatform = Platform(color: .black, size: CGSize(width: 300, height:40))
     newPlatform.position = pos
+    newPlatform.physicsBody = SKPhysicsBody(rectangleOf: newPlatform.size, category: UInt32(20), contact: UInt32(1))
     newPlatform.name = getNameForPlatform(newPlatform)
     addPlatformToDict(newPlatform)
     newPlatform.run(getAnimationForPlatform(newPlatform))
@@ -252,9 +253,9 @@ extension WinbyScene2 {
   
   private func assignNodeOfType<T>(_ type: T.Type, from contact: SKPhysicsContact) -> T? {
     assert(type is SKNode.Type)
-    if let foundA = contact.bodyA.node as? T      { print("found a");return foundA  }
-    if let foundB =  contact.bodyB.node as? T { print("found b");return foundB }
-    else               { return nil         }
+    if let foundA = contact.bodyA.node as? T { return foundA }
+    if let foundB = contact.bodyB.node as? T { return foundB }
+    else                                     { return nil    }
   }
   
   func didBegin(_ contact: SKPhysicsContact) {
@@ -263,8 +264,10 @@ extension WinbyScene2 {
     case UInt32(3):
       guard let lPlayer   = assignNodeOfType(Playa.self, from: contact) else { return }
       guard let lPlatform = assignNodeOfType(Platform.self, from: contact) else { return }
-      if lPlayer.platform === lPlatform  {print("ok"); return}
-      else { print("couldn't find player or platform") }
+      
+      if lPlayer.platform === lPlatform  {print("ok \(curFrame)") }
+      else { print("other contact") }
+        
     default: ()
     }
   }
