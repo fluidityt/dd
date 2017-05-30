@@ -35,6 +35,7 @@ extension Winby3 {
                              collision: UInt32(1) ,
                              contact: UInt32(1))
       pb.allowsRotation = false
+      //      pb.usesPreciseCollisionDetection = true
       
       platform.physicsBody = pb
       platform.name = String(nextLine)
@@ -75,6 +76,7 @@ extension Winby3 {
         collision  : UInt32(4),
         contact    : UInt32(1)
       )
+      //      platform.physicsBody?.usesPreciseCollisionDetection = true
       platform.name = "0"
       platform.position.y = frame.minY + platform.size.halfHeight
       platforms["0"] = platform
@@ -121,9 +123,25 @@ extension Winby3 {
     }
   }
 
+  override func didSimulatePhysics() {
+    if throwDSFFlag {
+      if let platform = dsfPlatform {
+          let maxDepression = 5.f
+        let playerPoint = player.frame.point.bottomMiddle.y + frame.halfHeight
+        let platformPoint = platform.frame.point.topMiddle.y + frame.halfHeight
+        if playerPoint < platformPoint - maxDepression {
+          debug("DEAD")
+          fatalError()
+        } // more checking
+      } else { fatalError("wtf how") }
+    }
+  }
+  
   override func didFinishUpdate() {
     player.keepInBounds()
     skipThisFrameContact = false // check in dbc
+    throwDSFFlag = false
+    dsfPlatform = nil
     
 //     debug("\(player.physicsBody!.velocity.dx)")
 /*    for platform in platforms.values { if platform == platforms["0"] { continue }

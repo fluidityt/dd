@@ -22,8 +22,8 @@ extension Winby3 {
       else { return nil }
     }
     
-    typealias WillKillWinby = Bool
-    func shouldKillWinby(player: Player3, platform: Platform3) -> WillKillWinby {
+    typealias IsWinbyDead = Bool
+    func shouldKillWinby(player: Player3, platform: Platform3) -> IsWinbyDead? {
       
       let minimumFooting = 5.f
       let maxDepression = 5.f
@@ -38,31 +38,39 @@ extension Winby3 {
         let platformPoint = platform.frame.point.middleRight.x + frame.halfWidth
         if playerPoint > (platformPoint - minimumFooting) { return true }
       }
-      do { // player bottom 
+      do { // player bottom
         let playerPoint = player.frame.point.bottomMiddle.y + frame.halfHeight
         let platformPoint = platform.frame.point.topMiddle.y + frame.halfHeight
-        if playerPoint < platformPoint - maxDepression { return true }
+        if playerPoint < platformPoint - maxDepression {
+          dsfPlatform = platform
+          return nil
+        } // more checking
       }
       
       // Base case:
       debug("not dead")
+      skipThisFrameContact = true
       return false
     }
-
-//    func putPlayerOnPlatform(player: Player3, platform: Platform3) {
-//      player.platform = platform
-//      player.physicsBody?.affectedByGravity = false
-//      player.physicsBody?.velocity = platform.physicsBody!.velocity
-//    }
-
+    
+    //    func putPlayerOnPlatform(player: Player3, platform: Platform3) {
+    //      player.platform = platform
+    //      player.physicsBody?.affectedByGravity = false
+    //      player.physicsBody?.velocity = platform.physicsBody!.velocity
+    //    }
+    
     guard let player   = findPlayer  (from: contact) else { return }
     guard let platform = findPlatform(from: contact) else { return }
     print("contact platform with player")
-
-    if shouldKillWinby(player: player, platform: platform) {
-      print("WINBY IS DEAD")
-      skipThisFrameContact = true
-      debug("DEAD")
+    
+    if let result = shouldKillWinby(player: player, platform: platform) {
+      if result.isTrue {
+        print("WINBY IS DEAD")
+        skipThisFrameContact = true
+        debug("DEAD")
+      }
+    } else { // more checking required
+     throwDSFFlag = true
     }
     
   }

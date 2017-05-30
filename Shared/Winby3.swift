@@ -20,6 +20,8 @@ class Player3: SKSpriteNode {
   func resetPB() {
     physicsBody = SKPhysicsBody(rectangleOf: size, category: UInt32(1), collision: UInt32(2), contact: UInt32(2))
     physicsBody!.allowsRotation = false
+    physicsBody!.usesPreciseCollisionDetection = true
+    
   }
   
   func jump() {
@@ -90,7 +92,7 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   let PLAT_HEIGHT = 35.f
   
-  let GRAV_DOWN = CGVector(dx: 0, dy: -50)
+  let GRAV_DOWN = CGVector(dx: 0, dy: -40)
   
   var nextLine = 1 // Used for positioning of next node, as well as name of node to keep track of in dict, and for collisions.
   
@@ -99,7 +101,11 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
     return CGPoint(x: 0, y: y)
   }()
   
+  
   var lastSpawnSide = "right"
   
   var skipThisFrameContact = false
+  var throwDSFFlag = false
+  var dsfPlatform: Platform3?
+  
 };
