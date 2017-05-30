@@ -11,14 +11,19 @@ class Player3: SKSpriteNode {
   
   var platform: Platform3?
   
-  let vec_jump = CGVector(dx: 0, dy: 400)
+  let vec_jump = CGVector(dx: 0, dy: 100)
   
   init(color: SKColor, size: CGSize) { super.init(texture: nil, color: color, size: size) }
   
   required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented")  }
   
   func resetPB() {
-    physicsBody = SKPhysicsBody(rectangleOf: size, category: UInt32(1), collision: UInt32(2), contact: UInt32(2))
+    physicsBody = SKPhysicsBody(
+      rectangleOf: size,
+      category: UInt32(1),
+      collision: UInt32(2),
+      contact: UInt32(2)
+    )
     physicsBody!.allowsRotation = false
     physicsBody!.usesPreciseCollisionDetection = true
     
@@ -92,7 +97,7 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   let PLAT_HEIGHT = 35.f
   
-  let GRAV_DOWN = CGVector(dx: 0, dy: -40)
+  let GRAV_DOWN = CGVector(dx: 0, dy: -20)
   
   var nextLine = 1 // Used for positioning of next node, as well as name of node to keep track of in dict, and for collisions.
   

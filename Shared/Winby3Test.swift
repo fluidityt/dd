@@ -43,6 +43,7 @@ extension Winby3 {
         let platformPoint = platform.frame.point.topMiddle.y + frame.halfHeight
         if playerPoint < platformPoint - maxDepression {
           dsfPlatform = platform
+          print("1", playerPoint)
           return nil
         } // more checking
       }
