@@ -13,6 +13,8 @@
 		4D2053841EDCF8F90079D3A4 /* Winby3.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4D2053821EDCF8F90079D3A4 /* Winby3.sks */; };
 		4D2053861EDCFCA20079D3A4 /* Winby3Funcs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2053851EDCFCA20079D3A4 /* Winby3Funcs.swift */; };
 		4D2053871EDCFCA20079D3A4 /* Winby3Funcs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2053851EDCFCA20079D3A4 /* Winby3Funcs.swift */; };
+		4D440B671EDD430D00B58ABF /* Winby3Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D440B661EDD430D00B58ABF /* Winby3Test.swift */; };
+		4D440B681EDD430D00B58ABF /* Winby3Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D440B661EDD430D00B58ABF /* Winby3Test.swift */; };
 		4DAC0EA11ED109990054EAC2 /* 1. GameScene Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E8F1ED109990054EAC2 /* 1. GameScene Init.swift */; };
 		4DAC0EA21ED109990054EAC2 /* 1. Spawner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E901ED109990054EAC2 /* 1. Spawner.swift */; };
 		4DAC0EA31ED109990054EAC2 /* 2. Hiscores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DAC0E911ED109990054EAC2 /* 2. Hiscores.swift */; };
@@ -58,6 +60,7 @@
 		4D20537F1EDCE8790079D3A4 /* Winby3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Winby3.swift; sourceTree = "<group>"; };
 		4D2053821EDCF8F90079D3A4 /* Winby3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Winby3.sks; sourceTree = "<group>"; };
 		4D2053851EDCFCA20079D3A4 /* Winby3Funcs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Winby3Funcs.swift; sourceTree = "<group>"; };
+		4D440B661EDD430D00B58ABF /* Winby3Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Winby3Test.swift; sourceTree = "<group>"; };
 		4DAC0E8F1ED109990054EAC2 /* 1. GameScene Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "1. GameScene Init.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		4DAC0E901ED109990054EAC2 /* 1. Spawner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "1. Spawner.swift"; sourceTree = "<group>"; };
 		4DAC0E911ED109990054EAC2 /* 2. Hiscores.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "2. Hiscores.swift"; sourceTree = "<group>"; };
@@ -147,6 +150,7 @@
 				4DFEEC4F1ED8C32400C17D5F /* WinbyScene2.swift */,
 				4D20537F1EDCE8790079D3A4 /* Winby3.swift */,
 				4D2053851EDCFCA20079D3A4 /* Winby3Funcs.swift */,
+				4D440B661EDD430D00B58ABF /* Winby3Test.swift */,
 			);
 			name = "Winby Jump";
 			sourceTree = "<group>";
@@ -342,6 +346,7 @@
 				4DBF1C271ECFEA6400EF0CFC /* GameScene22.swift in Sources */,
 				4D2053801EDCE8790079D3A4 /* Winby3.swift in Sources */,
 				4D2053861EDCFCA20079D3A4 /* Winby3Funcs.swift in Sources */,
+				4D440B671EDD430D00B58ABF /* Winby3Test.swift in Sources */,
 				4DFEEC541ED96FFF00C17D5F /* utilz SKCLASS.swift in Sources */,
 				4DFEEC501ED8C32400C17D5F /* WinbyScene2.swift in Sources */,
 				4DBF1C0D1ECFEA6400EF0CFC /* GameViewController.swift in Sources */,
@@ -378,6 +383,7 @@
 				4DAC0EA81ED109990054EAC2 /* 0. OptionScene.swift in Sources */,
 				4DAC0EAE1ED109990054EAC2 /* utilz.swift in Sources */,
 				4DAC0EB11ED109990054EAC2 /* WinbySpawner.swift in Sources */,
+				4D440B681EDD430D00B58ABF /* Winby3Test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
