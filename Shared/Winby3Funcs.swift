@@ -23,18 +23,21 @@ extension Winby3 {
     // platform.constraints = [SKConstraint.zRotation(SKRange(constantValue: 0))]
     platform.name = String(platformCount)
     platforms[String(Int(platform.name!)!)] = platform
-    
-    var startX = CGFloat(0)
-    /*if lastSpawnSide == "right" {
-     startX = frame.minX - platform.size.halfWidth
-     } else { startX = frame.maxX + platform.size.halfWidth }*/
-    
-    let startY = baseSpawnPos.y * nextLine.f
+    /*
+      var startX = CGFloat(0)
+      if lastSpawnSide == "right" {
+       startX = frame.minX - platform.size.halfWidth
+       } else { startX = frame.maxX + platform.size.halfWidth }
+      
+      let startY = baseSpawnPos.y * nextLine.f
+      platform.position = CGPoint(x: startX, y: startY)
+     */
     
     platform.position = player.position
-    platform.position.x += 100
+    platform.position.x += 400
     platform.position.y += 75
-    // platform.position = CGPoint(x: startX, y: startY)
+    platform.constraints = [SKConstraint.positionY(SKRange(constantValue: platform.position.y))]
+    //platform.yVal = platform.position.y
     
     let command: ()->() = {
 
@@ -107,10 +110,9 @@ extension Winby3 {
     }
     
      func initPlayer() {
-      player.physicsBody = SKPhysicsBody(rectangleOf: player.size, category: UInt32(1), collision: UInt32(2), contact: UInt32(2))
+      player.resetPB()
       player.position.y = platforms["0"]!.frame.maxY + player.size.halfHeight
     //  player.constraints = [SKConstraint.zRotation(SKRange(constantValue: 0))]
-      player.physicsBody!.allowsRotation = false
       addChild(player)
     }
     
@@ -124,10 +126,9 @@ extension Winby3 {
   }
   
   override func mouseDown(with event: NSEvent) {
-    player.physicsBody!.applyImpulse(vec_jump)
-    player.physicsBody?.affectedByGravity = true
+    player.jump()
   }
-    
+  
   override func update(_ currentTime: TimeInterval) {
     for command in commands {
       command()
@@ -136,6 +137,9 @@ extension Winby3 {
 
   override func didFinishUpdate() {
     player.keepInBounds()
+/*    for platform in platforms.values { if platform == platforms["0"] { continue }
+      platform.keepAtYVal()
+    }*/
   }
 }
 
@@ -158,8 +162,18 @@ extension Winby3 {
     guard let player = findPlayer(from: contact) else     { return }
     guard let platform = findPlatform(from: contact) else { return }
   
+    player.platform = platform
     player.physicsBody?.affectedByGravity = false
     player.physicsBody?.velocity = platform.physicsBody!.velocity
+    
+    // Used in update:
+    let command: ()->() = {
+      if player.platform == self.platforms["1"] {
+       player.physicsBody?.velocity = player.platform!.physicsBody!.velocity
+      }
+    }
+    
+    commands.append(command)
     print("contact platform with player")
   }
   
