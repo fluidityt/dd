@@ -11,7 +11,7 @@ class Player3: SKSpriteNode {
   
   var platform: Platform3?
   
-  let vec_jump = CGVector(dx: 0, dy: 40)
+  let vec_jump = CGVector(dx: 0, dy: 400)
   
   init(color: SKColor, size: CGSize) { super.init(texture: nil, color: color, size: size) }
   
@@ -31,7 +31,7 @@ class Player3: SKSpriteNode {
   }
 
   func keepInBounds() {
-    func resetVelocity() {  physicsBody?.velocity = CGVector.zero }
+    func resetVelocity() {  physicsBody!.velocity = CGVector.zero }
     
     if let scene = scene {
       let offsetY = size.halfHeight, offsetX = size.halfWidth
@@ -90,6 +90,8 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   let PLAT_HEIGHT = 35.f
   
+  let GRAV_DOWN = CGVector(dx: 0, dy: -50)
+  
   var nextLine = 1 // Used for positioning of next node, as well as name of node to keep track of in dict, and for collisions.
   
   lazy var baseSpawnPos: CGPoint = {
@@ -99,4 +101,5 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   var lastSpawnSide = "right"
   
+  var skipThisFrameContact = false
 };

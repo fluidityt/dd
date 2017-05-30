@@ -27,38 +27,32 @@ extension Winby3 {
     nextLine = 2
     
     // TODO: random size
-    let platform = Platform3(color: .black, size: CGSize(width: 200, height: PLAT_HEIGHT))
-    
-    let pb = SKPhysicsBody(rectangleOf: platform.size,
-                           affectedGravity: false,
-                           category: UInt32(2),
-                           collision: UInt32(1) ,
-                           contact: UInt32(1))
-    pb.allowsRotation = false
-    
-    platform.physicsBody = pb
-    platform.name = String(nextLine)
-    
-    platform.position = getStartingPosition(for: platform)
-    platform.constraints = [SKConstraint.positionY(SKRange(constantValue: platform.position.y))]
-    debug("\(platform.position)")
-  
-    
-    let command: ()->() = {
+    let platform = Platform3(color: .black, size: CGSize(width: 200, height: PLAT_HEIGHT)); do {
       
-      if platform.position.x > self.frame.maxX + platform.size.halfWidth {
-        platform.going = platform.dir_left
+      let pb = SKPhysicsBody(rectangleOf: platform.size,
+                             affectedGravity: false,
+                             category: UInt32(2),
+                             collision: UInt32(1) ,
+                             contact: UInt32(1))
+      pb.allowsRotation = false
+      
+      platform.physicsBody = pb
+      platform.name = String(nextLine)
+      platform.position = getStartingPosition(for: platform)
+      platform.constraints = [SKConstraint.positionY(SKRange(constantValue: platform.position.y))]
+      platform.command = {
+        // TODO: put this as a property of platform (list of commands?)
+        if platform.position.x > self.frame.maxX + platform.size.halfWidth {
+          platform.going = platform.dir_left
+        }
+        else if platform.position.x < self.frame.minX - platform.size.halfWidth {
+          platform.going = platform.dir_right
+        }
+        
+        if      platform.going == platform.dir_right { pb.velocity = platform.vec_right }
+        else if platform.going == platform.dir_left  { pb.velocity = platform.vec_left  }
       }
-      else if platform.position.x < self.frame.minX - platform.size.halfWidth {
-        platform.going = platform.dir_right
-      }
-      
-      if      platform.going == platform.dir_right { pb.velocity = platform.vec_right }
-      else if platform.going == platform.dir_left  { pb.velocity = platform.vec_left  }
-      
     }
-    platform.command = command
-    
     addPlatformToDict(platform)
     addChild(platform)
   }
@@ -66,8 +60,6 @@ extension Winby3 {
   // MARK: - Init:
   private func initSelf() {
     
-    let GRAV_DOWN = CGVector(dx: 0, dy: -5)
-
     func initScene() {
       physicsWorld.contactDelegate = self
       anchorPoint = CGPoint.middle
@@ -115,6 +107,13 @@ extension Winby3 {
   override func mouseDown(with event: NSEvent) {
     player.jump()
   }
+
+  override func keyDown(with event: NSEvent) {
+    player.position = CGPoint.zero
+    
+  }
+  override func rightMouseDown(with event: NSEvent) {
+  }
   
   override func update(_ currentTime: TimeInterval) {
     for platform in platforms.values {
@@ -124,6 +123,9 @@ extension Winby3 {
 
   override func didFinishUpdate() {
     player.keepInBounds()
+    skipThisFrameContact = false // check in dbc
+    
+//     debug("\(player.physicsBody!.velocity.dx)")
 /*    for platform in platforms.values { if platform == platforms["0"] { continue }
       platform.keepAtYVal()
     }*/
