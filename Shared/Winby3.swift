@@ -114,7 +114,13 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   var platforms: [String: Platform3] = [:]
   
-  let PLAT_HEIGHT = 35.f
+  let COLOR1 = SKColor.black
+  
+  let COLOR2 = SKColor.gray
+  
+  let PLAT_RANDX = 100.f
+  
+  let PLAT_HEIGHT = 25.f                      // Make sure this isn't smaller than depression..
   
   let GRAV_DOWN = CGVector(dx: 0, dy: -20)
   

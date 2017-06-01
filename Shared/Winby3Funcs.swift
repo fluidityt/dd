@@ -11,30 +11,40 @@ extension Winby3 {
     debug("\(score)")
   }
   
-  func addPlatformToDict(_ platform: Platform3) {
-    guard let name = platform.name else { fatalError("must have name") }
-    platforms[name] = platform            // Did you add before giving name?
-  }
-  
   func spawnTestPlatform() {
+
+    func addPlatformToDict(_ platform: Platform3) {
+      guard let name = platform.name else { fatalError("must have name") }
+      platforms[name] = platform            // Did you add before giving name?
+    }
     
     func getStartingPosition(for platform: Platform3) -> CGPoint {
       
       var startX = CGFloat(0)
       if lastSpawnSide == "right" {
-        startX = frame.minX - platform.size.halfWidth
-      } else { startX = frame.maxX + platform.size.halfWidth  }
+        startX = frame.minX - platform.size.halfWidth - PLAT_RANDX
+        lastSpawnSide = "left"
+      } else {
+        startX = frame.maxX + platform.size.halfWidth + PLAT_RANDX
+        lastSpawnSide = "right"
+      }
       
       let startY = baseSpawnPos.y - PLAT_HEIGHT + (PLAT_HEIGHT * nextLine.f)
       
       return CGPoint(x: startX, y: startY)
     }
     
+    let color: SKColor = {
+      if randy(2) == 2 { return COLOR1 }
+      else { return COLOR2 }
+    }()
+    
     // FIXME: random
     nextLine += randy(2)
     
     // FIXME: random size
-    let platform = Platform3(color: .black, size: CGSize(width: 200, height: PLAT_HEIGHT)); do {
+    
+    let platform = Platform3(color: color, size: CGSize(width: 200, height: PLAT_HEIGHT)); do {
       
       let pb = SKPhysicsBody(rectangleOf: platform.size,
                              affectedGravity: false,
