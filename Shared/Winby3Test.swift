@@ -51,7 +51,6 @@ extension Winby3 {
       
       // Base case (player is alive and on platform):
       debug("not dead | \(score)")
-      player.platform = platform // used in DSP.. if platform isn't nil, then .land(on: platform()
       
       flag_shouldLandOnPlatform = true
       flagdata_platformTolandOn = platform

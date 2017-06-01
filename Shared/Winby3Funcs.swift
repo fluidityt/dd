@@ -155,31 +155,26 @@ extension Winby3 {
       }
       
       if maybeKillPlayer() { player.die() }
-
+      
     }
     
     // Check 2: Landing:
     if flag_shouldLandOnPlatform {
       guard let platform = flagdata_platformTolandOn else { fatalError("wtf lol") }
       player.land(on: platform)
-    }
-    
-    // Check 3: Scoring
-    if player.isDead { return } else {                 // This may mess up death animations later on...
-      
-      //player.land(on: platform)
       
       
-      guard let platform = player.platform else { return } // Player is jumping / falling.
+      // Check 3: Scoring
+      guard player.isAlive else              { return }      // This may mess up death animations later on...
+      guard platform == player.platform else { return }
+      if platform.hasBeenScored()            { return }
       
-      if platform.hasBeenScored().isFalse {
-        platform.setHasBeenScoredToTrue()
-        increaseScore()
-      }
-      
+      platform.setHasBeenScoredToTrue()
+      increaseScore()
     }
   }
-  
+
+
   override func didFinishUpdate() {
   
     func testingAtFinish() {

@@ -11,7 +11,7 @@ class Player3: SKSpriteNode {
   
   var platform: Platform3?
   
-  var isDead = false
+  var isAlive = true
   
   let vec_jump = CGVector(dx: 0, dy: 100)
   
@@ -49,7 +49,7 @@ class Player3: SKSpriteNode {
   func die() {
     debug("DEAD")
     print("dead")
-    isDead = true
+    isAlive = true
   }
 };
 
