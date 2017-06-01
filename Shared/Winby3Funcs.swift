@@ -22,10 +22,10 @@ extension Winby3 {
       
       var startX = CGFloat(0)
       if lastSpawnSide == "right" {
-        startX = frame.minX - platform.size.halfWidth - PLAT_RANDX
+        startX = frame.minX - platform.size.halfWidth - platform.wanderDistance
         lastSpawnSide = "left"
       } else {
-        startX = frame.maxX + platform.size.halfWidth + PLAT_RANDX
+        startX = frame.maxX + platform.size.halfWidth + platform.wanderDistance
         lastSpawnSide = "right"
       }
       
@@ -64,7 +64,7 @@ extension Winby3 {
         
         let offset: CGFloat = {
           if platform.isCarryingPlayer { return platform.size.halfWidth/2 }
-          else { return platform.size.halfWidth }
+          else { return platform.size.halfWidth + platform.wanderDistance }
         }()
         
         // TODO: put this as a property of platform (list of commands?)
@@ -154,12 +154,15 @@ extension Winby3 {
     }
   }
 
+  // func didBegin(_ contact:) { ... }
+  
   override func didSimulatePhysics() {
     
     // Check 1: To live or die
-    if flag_throwDSPFlag {
+    if flag_doSecondKillCheck {
       
-      func maybeKillPlayer() -> Bool {          // This only works with dfu code to reset from didBegin()
+      func maybeKillPlayer() -> Bool {
+
         guard let platform = flagdata_dspPlatform else { fatalError("wtf how.. should be in dbc") }
         
         let maxDepression = 5.f
@@ -207,7 +210,7 @@ extension Winby3 {
     }
     
     func resetFlags() {
-      flag_throwDSPFlag = false
+      flag_doSecondKillCheck = false
       flag_shouldLandOnPlatform = false
       flag_skipThisFrameContact = false
       flag_shouldSpawnNewPlatform = false

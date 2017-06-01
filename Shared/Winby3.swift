@@ -71,10 +71,10 @@ class Player3: SKSpriteNode {
 
 class Platform3: SKSpriteNode {
   
-  let vec_speed: Int
+  
   
   init(color: SKColor, size: CGSize) {
-    self.vec_speed = 60 + randy(60)
+
     super.init(texture: nil, color: color, size: size)
     
     self.size.width = 50.f + randy(100)
@@ -92,8 +92,12 @@ class Platform3: SKSpriteNode {
   func hasBeenScored() -> Bool { return _hasBeenScored  }
   func setHasBeenScoredToTrue() { _hasBeenScored = true }
   
+  let wanderDistance = randy(75).f
+  
   let dir_left  = "left"                       // Used inside of the command to perpetuate motion:
   let dir_right = "right"
+  
+  let vec_speed = 60 + randy(60)
   lazy var vec_left: CGVector  = { return CGVector(dx: -self.vec_speed, dy: 0) }()
   lazy var vec_right: CGVector = { return CGVector(dx: self.vec_speed, dy: 0) }()
   
@@ -118,8 +122,6 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   let COLOR2 = SKColor.gray
   
-  let PLAT_RANDX = 100.f
-  
   let PLAT_HEIGHT = 25.f                      // Make sure this isn't smaller than depression..
   
   let GRAV_DOWN = CGVector(dx: 0, dy: -20)
@@ -142,7 +144,7 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   var flagdata_platformTolandOn: Platform3?
   
   /// Need to set this in didBegin() once player has been determined to be dead from  a vertical landing (or other vertical collision) to ensure that player does not die from a normal landing
-  var flag_throwDSPFlag = false // TODO: I really need to rename this =/
+  var flag_doSecondKillCheck = false // TODO: I really need to rename this =/
   var flagdata_dspPlatform: Platform3?
   
   
