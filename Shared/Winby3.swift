@@ -11,6 +11,8 @@ class Player3: SKSpriteNode {
   
   var platform: Platform3?
   
+  var isDead = false
+  
   let vec_jump = CGVector(dx: 0, dy: 100)
   
   init(color: SKColor, size: CGSize) { super.init(texture: nil, color: color, size: size) }
@@ -33,7 +35,7 @@ class Player3: SKSpriteNode {
     resetPB()
     position.y += 2 // Clear enough to not trigger contact.
     platform = nil
-    physicsBody?.affectedByGravity = true
+    physicsBody!.affectedByGravity = true
     physicsBody!.applyImpulse(vec_jump)
   }
 
@@ -44,29 +46,11 @@ class Player3: SKSpriteNode {
     position.y = platform.frame.point.topMiddle.y + size.halfHeight
   }
   
-  func keepInBounds() {
-    func resetVelocity() {  physicsBody!.velocity = CGVector.zero }
-    
-    if let scene = scene {
-      let offsetY = size.halfHeight, offsetX = size.halfWidth
-      
-      if position.y < scene.frame.minY + offsetY {
-        position.y = scene.frame.minY + offsetY
-        resetVelocity()
-      } else if position.y > scene.frame.maxY - offsetY {
-        position.y = scene.frame.maxY - offsetY
-        resetVelocity()
-      } else if position.x < scene.frame.minX + offsetX {
-        position.x = scene.frame.minX + offsetX
-        resetVelocity()
-      } else if position.x > scene.frame.maxX - offsetX {
-        position.x = scene.frame.maxX - offsetX
-        resetVelocity()
-      }
-    }
+  func die() {
+    debug("DEAD")
+    print("dead")
+    isDead = true
   }
-  
-  
 };
 
 //
@@ -84,7 +68,12 @@ class Platform3: SKSpriteNode {
   
   var going = "left"
   
-  let dir_left  = "left"
+  // The only good case for a setter:
+  private var _hasBeenScored = false
+  func hasBeenScored() -> Bool { return _hasBeenScored  }
+  func setHasBeenScoredToTrue() { _hasBeenScored = true }
+  
+  let dir_left  = "left"                       // Used inside of the command to perpetuate motion:
   let dir_right = "right"
   let vec_left  = CGVector(dx: -60, dy: 0)
   let vec_right = CGVector(dx: 60, dy: 0)
@@ -102,25 +91,32 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   let player = Player3(color: .yellow, size: CGSize(width: 50, height: 50))
   
+  var score = 0
+  
   var platforms: [String: Platform3] = [:]
   
   let PLAT_HEIGHT = 35.f
   
   let GRAV_DOWN = CGVector(dx: 0, dy: -20)
   
-  var nextLine = 1 // Used for positioning of next node, as well as name of node to keep track of in dict, and for collisions.
+  var nextLine = 1                             // Used for positioning of next node, as well as name of node to keep track of in dict, and for collisions.
   
   lazy var baseSpawnPos: CGPoint = {
     let y = self.player.frame.maxY + self.player.size.halfHeight + 1
     return CGPoint(x: 0, y: y)
   }()
   
-  
   var lastSpawnSide = "right"
   
-  var skipThisFrameContact = false
-  var throwDSFFlag = false
-  var dsfPlatform: Platform3?
+  /// Because everything should be resolved next frame regardless, and it could complicate loop logic for landing.
+  var flag_skipThisFrameContact = false
+  
+  var flag_shouldLandOnPlatform = false
+  var flagdata_platformTolandOn: Platform3?
+  
+  /// Need to set this in didBegin() once player has been determined to be dead from  a vertical landing (or other vertical collision) to ensure that player does not die from a normal landing
+  var flag_throwDSPFlag = false // TODO: I really need to rename this =/
+  var flagdata_dspPlatform: Platform3?
   
   
 };

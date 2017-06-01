@@ -8,7 +8,7 @@ import SpriteKit
 extension Winby3 {
   
   func didBegin(_ contact: SKPhysicsContact) {
-    if skipThisFrameContact { return }
+    if flag_skipThisFrameContact { return }
     
     func findPlayer(from contact: SKPhysicsContact) -> Player3? {
       if contact.bodyA.node is Player3 { return contact.bodyA.node as! Player3 }
@@ -23,6 +23,7 @@ extension Winby3 {
     }
     
     typealias IsWinbyDead = Bool
+    
     func shouldKillWinby(player: Player3, platform: Platform3) -> IsWinbyDead? {
       
       let minimumFooting = 5.f
@@ -42,26 +43,23 @@ extension Winby3 {
         let playerPoint = player.frame.point.bottomMiddle.y + frame.halfHeight
         let platformPoint = platform.frame.point.topMiddle.y + frame.halfHeight
         if playerPoint < platformPoint - maxDepression {
-          dsfPlatform = platform
+          flagdata_dspPlatform = platform
           print("1", playerPoint)
           return nil
         } // more checking
       }
       
-      // Base case:
-      debug("not dead")
-      player.land(on: platform)
+      // Base case (player is alive and on platform):
+      debug("not dead | \(score)")
+      player.platform = platform // used in DSP.. if platform isn't nil, then .land(on: platform()
       
-      skipThisFrameContact = true
+      flag_shouldLandOnPlatform = true
+      flagdata_platformTolandOn = platform
+      
+      flag_skipThisFrameContact = true  // This is probably bugged? But would resolve next frame 99.9%
       return false
     }
-    
-    //    func putPlayerOnPlatform(player: Player3, platform: Platform3) {
-    //      player.platform = platform
-    //      player.physicsBody?.affectedByGravity = false
-    //      player.physicsBody?.velocity = platform.physicsBody!.velocity
-    //    }
-    
+
     guard let player   = findPlayer  (from: contact) else { return }
     guard let platform = findPlatform(from: contact) else { return }
     print("contact platform with player")
@@ -69,11 +67,12 @@ extension Winby3 {
     if let result = shouldKillWinby(player: player, platform: platform) {
       if result.isTrue {
         print("WINBY IS DEAD")
-        skipThisFrameContact = true
         debug("DEAD")
+        player.die()
+        flag_skipThisFrameContact = true
       }
     } else { // more checking required
-     throwDSFFlag = true
+     flag_throwDSPFlag = true
     }
     
   }
