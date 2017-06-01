@@ -141,6 +141,7 @@ extension Winby3 {
   
   override func didFinishUpdate() {
     player.keepInBounds()
+    
     skipThisFrameContact = false // check in dbc
     throwDSFFlag = false
     dsfPlatform = nil

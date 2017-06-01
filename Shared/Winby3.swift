@@ -37,6 +37,13 @@ class Player3: SKSpriteNode {
     physicsBody!.applyImpulse(vec_jump)
   }
 
+  func land(on platform: Platform3) {
+    self.platform = platform
+    resetPB()
+    physicsBody!.affectedByGravity = false
+    position.y = platform.frame.point.topMiddle.y + size.halfHeight
+  }
+  
   func keepInBounds() {
     func resetVelocity() {  physicsBody!.velocity = CGVector.zero }
     
@@ -58,6 +65,8 @@ class Player3: SKSpriteNode {
       }
     }
   }
+  
+  
 };
 
 //
@@ -70,7 +79,7 @@ class Platform3: SKSpriteNode {
   init(color: SKColor, size: CGSize) {
     super.init(texture: nil, color: color, size: size)
   }
-  
+  // Use SKAction as this command?
   var command: Optional<()->()>
   
   var going = "left"
@@ -112,5 +121,6 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   var skipThisFrameContact = false
   var throwDSFFlag = false
   var dsfPlatform: Platform3?
+  
   
 };

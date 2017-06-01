@@ -50,6 +50,8 @@ extension Winby3 {
       
       // Base case:
       debug("not dead")
+      player.land(on: platform)
+      
       skipThisFrameContact = true
       return false
     }
