@@ -12,7 +12,8 @@ extension Winby3 {
   }
   
   func addPlatformToDict(_ platform: Platform3) {
-    platforms[platform.name!] = platform // Did you add before giving name?
+    guard let name = platform.name else { fatalError("must have name") }
+    platforms[name] = platform            // Did you add before giving name?
   }
   
   func spawnTestPlatform() {
@@ -29,9 +30,10 @@ extension Winby3 {
       return CGPoint(x: startX, y: startY)
     }
     
-    nextLine = 2
+    // FIXME: random
+    nextLine += randy(2)
     
-    // TODO: random size
+    // FIXME: random size
     let platform = Platform3(color: .black, size: CGSize(width: 200, height: PLAT_HEIGHT)); do {
       
       let pb = SKPhysicsBody(rectangleOf: platform.size,
@@ -49,11 +51,17 @@ extension Winby3 {
       platform.position = getStartingPosition(for: platform)
       platform.constraints = [SKConstraint.positionY(SKRange(constantValue: platform.position.y))]
       platform.command = {
+        
+        let offset: CGFloat = {
+          if platform.isCarryingPlayer { return platform.size.halfWidth/2 }
+          else { return platform.size.halfWidth }
+        }()
+        
         // TODO: put this as a property of platform (list of commands?)
-        if platform.position.x > self.frame.maxX + platform.size.halfWidth {
+        if platform.position.x > self.frame.maxX + offset {
           platform.going = platform.dir_left
         }
-        else if platform.position.x < self.frame.minX - platform.size.halfWidth {
+        else if platform.position.x < self.frame.minX - offset {
           platform.going = platform.dir_right
         }
         
@@ -130,7 +138,9 @@ extension Winby3 {
     }
     
     if let platform = player.platform {     // Keep player on platform.
-     player.physicsBody!.velocity = platform.physicsBody!.velocity
+      guard let playerPB   = player.physicsBody   else { fatalError() }
+      guard let platformPB = platform.physicsBody else { fatalError() }
+      playerPB.velocity = platformPB.velocity
     }
   }
 
@@ -171,20 +181,27 @@ extension Winby3 {
       
       platform.setHasBeenScoredToTrue()
       increaseScore()
+      flag_shouldSpawnNewPlatform = true
+      
+      // Check 4: Spawning:
+      if flag_shouldSpawnNewPlatform {
+        spawnTestPlatform()
+      }
     }
   }
-
 
   override func didFinishUpdate() {
   
     func testingAtFinish() {
-//    debug("\(player.physicsBody!.affectedByGravity)")
+
     }
     
     func resetFlags() {
       flag_throwDSPFlag = false
       flag_shouldLandOnPlatform = false
       flag_skipThisFrameContact = false
+      flag_shouldSpawnNewPlatform = false
+      
       flagdata_dspPlatform = nil
       flagdata_platformTolandOn = nil
     }

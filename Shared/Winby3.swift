@@ -20,36 +20,47 @@ class Player3: SKSpriteNode {
   required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented")  }
   
   func resetPB() {
-    physicsBody = SKPhysicsBody(
+    let pb = SKPhysicsBody(
       rectangleOf: size,
       category: UInt32(1),
       collision: UInt32(2),
       contact: UInt32(2)
     )
-    physicsBody!.allowsRotation = false
-    physicsBody!.usesPreciseCollisionDetection = true
-    
+    pb.allowsRotation = false
+    pb.usesPreciseCollisionDetection = true
+    physicsBody = pb
   }
   
   func jump() {
     resetPB()
     position.y += 2 // Clear enough to not trigger contact.
+    if let platform = platform {
+      platform.isCarryingPlayer = false
+    }
     platform = nil
-    physicsBody!.affectedByGravity = true
-    physicsBody!.applyImpulse(vec_jump)
+    guard let pb = physicsBody else { fatalError() }
+    pb.affectedByGravity = true
+    pb.applyImpulse(vec_jump)
   }
 
   func land(on platform: Platform3) {
     self.platform = platform
+    platform.isCarryingPlayer = true
     resetPB()
-    physicsBody!.affectedByGravity = false
+    guard let pb = physicsBody else { fatalError() }
+    pb.affectedByGravity = false
     position.y = platform.frame.point.topMiddle.y + size.halfHeight
   }
   
   func die() {
     debug("DEAD")
     print("dead")
-    isAlive = true
+    resetPB()
+    isAlive = false
+    guard let scene = scene else { fatalError() }
+    guard let view = scene.view else { fatalError() }
+    scene.removeAllChildren()
+    view.presentScene(Winby3(size: scene.size))
   }
 };
 
@@ -60,13 +71,21 @@ class Player3: SKSpriteNode {
 
 class Platform3: SKSpriteNode {
   
+  let vec_speed: Int
+  
   init(color: SKColor, size: CGSize) {
+    self.vec_speed = 60 + randy(60)
     super.init(texture: nil, color: color, size: size)
+    
+    self.size.width = 50.f + randy(100)
   }
+
   // Use SKAction as this command?
   var command: Optional<()->()>
   
   var going = "left"
+  
+  var isCarryingPlayer = false
   
   // The only good case for a setter:
   private var _hasBeenScored = false
@@ -75,8 +94,8 @@ class Platform3: SKSpriteNode {
   
   let dir_left  = "left"                       // Used inside of the command to perpetuate motion:
   let dir_right = "right"
-  let vec_left  = CGVector(dx: -60, dy: 0)
-  let vec_right = CGVector(dx: 60, dy: 0)
+  lazy var vec_left: CGVector  = { return CGVector(dx: -self.vec_speed, dy: 0) }()
+  lazy var vec_right: CGVector = { return CGVector(dx: self.vec_speed, dy: 0) }()
   
   required init?(coder aDecoder: NSCoder) {    fatalError("init(coder:) has not been implemented")  }
 };
@@ -110,6 +129,8 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   /// Because everything should be resolved next frame regardless, and it could complicate loop logic for landing.
   var flag_skipThisFrameContact = false
+  
+  var flag_shouldSpawnNewPlatform = false
   
   var flag_shouldLandOnPlatform = false
   var flagdata_platformTolandOn: Platform3?
