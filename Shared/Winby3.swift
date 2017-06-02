@@ -52,15 +52,18 @@ class Player3: SKSpriteNode {
     position.y = platform.frame.point.topMiddle.y + size.halfHeight
   }
   
-  func die() {
+  func die(from platform: Platform3) {
     debug("DEAD")
     print("dead")
+    
     resetPB()
     isAlive = false
-    guard let scene = scene else { fatalError() }
-    guard let view = scene.view else { fatalError() }
-    scene.removeAllChildren()
-    view.presentScene(Winby3(size: scene.size))
+    
+    // FIXME: This still isn't working:
+//    position.y = platform.frame.point.topMiddle.y + size.halfHeight
+    
+    guard let scene = scene as? Winby3 else { fatalError("wtf is the scene?") }
+    scene.flag_shouldGameOver = true
   }
 };
 
@@ -70,9 +73,8 @@ class Player3: SKSpriteNode {
 //let label = SKLabelNode(text: "hi", fontColor: .white, fontSize: 32)
 
 class Platform3: SKSpriteNode {
-  
-  
-  
+
+  // TODO: better initializer?
   init(color: SKColor, size: CGSize) {
 
     super.init(texture: nil, color: color, size: size)
@@ -98,10 +100,34 @@ class Platform3: SKSpriteNode {
   let dir_right = "right"
   
   let vec_speed = 60 + randy(60)
-  lazy var vec_left: CGVector  = { return CGVector(dx: -self.vec_speed, dy: 0) }()
-  lazy var vec_right: CGVector = { return CGVector(dx: self.vec_speed, dy: 0) }()
+  lazy var vec_left: CGVector  = CGVector(dx: -self.vec_speed, dy: 0)
+  lazy var vec_right: CGVector = CGVector(dx:  self.vec_speed, dy: 0)
   
   required init?(coder aDecoder: NSCoder) {    fatalError("init(coder:) has not been implemented")  }
+};
+
+final class Camera {
+  
+  private var scene: Winby3
+  private var counter = 0
+  
+  init(scene: Winby3) {
+    self.scene = scene
+  }
+  
+  func moveDown(by amount: CGFloat) {
+    counter = amount.i
+  }
+  
+  func update() {
+    if counter > 0 {
+      for node in scene.children {
+        if node is SKLabelNode { continue }
+        node.position.y -= 1
+        counter -= 1
+      }
+    }
+  }
 };
 
 //
@@ -114,9 +140,11 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   let player = Player3(color: .yellow, size: CGSize(width: 50, height: 50))
   
-  var score = 0
+  lazy var cam: Camera = Camera(scene: self)
   
   var platforms: [String: Platform3] = [:]
+  
+  var score = 0
   
   let COLOR1 = SKColor.black
   
@@ -128,10 +156,7 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   var nextLine = 1                             // Used for positioning of next node, as well as name of node to keep track of in dict, and for collisions.
   
-  lazy var baseSpawnPos: CGPoint = {
-    let y = self.player.frame.maxY + self.player.size.halfHeight + 1
-    return CGPoint(x: 0, y: y)
-  }()
+  lazy var baseSpawnPos: CGPoint = CGPoint(x:0, y: self.player.frame.maxY + self.player.size.halfHeight + 1)
   
   var lastSpawnSide = "right"
   
@@ -139,6 +164,8 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   var flag_skipThisFrameContact = false
   
   var flag_shouldSpawnNewPlatform = false
+  
+  var flag_shouldGameOver = false // This flag doesn't get reset anywhere (except on new instance)
   
   var flag_shouldLandOnPlatform = false
   var flagdata_platformTolandOn: Platform3?

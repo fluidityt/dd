@@ -6,11 +6,6 @@ import SpriteKit
 
 extension Winby3 {
   
-  func increaseScore() {
-    score += 1
-    debug("\(score)")
-  }
-  
   func spawnTestPlatform() {
 
     func addPlatformToDict(_ platform: Platform3) {
@@ -83,52 +78,52 @@ extension Winby3 {
     addChild(platform)
   }
   
-  // MARK: - Init:
-  private func initSelf() {
-    
-    func initScene() {
-      physicsWorld.contactDelegate = self
-      anchorPoint = CGPoint.middle
-      physicsWorld.gravity = GRAV_DOWN
-    }
-    
-    func initPlatform() {
-      let platform = Platform3(color: .black, size: CGSize(width: 200, height: PLAT_HEIGHT))
-      
-      platform.physicsBody = SKPhysicsBody(
-        rectangleOf: platform.size,
-        affectedGravity: false,
-        category   : UInt32(2),
-        //collision  : UInt32(1),
-        contact    : UInt32(1),
-        restitution: 0
-      )
-      //      platform.physicsBody?.usesPreciseCollisionDetection = true
-      platform.name = "0"
-      platform.position.y = frame.minY + platform.size.halfHeight
-      platforms["0"] = platform
-      addChild(platform)
-    }
-    
-     func initPlayer() {
-      player.resetPB()
-      player.position.y = platforms["0"]!.frame.maxY + player.size.halfHeight
-      addChild(player)
-    }
-    
-    func initLabel() {
-      label.text = "adadfasdfasdfsadfas"
-      label.position.y = frame.maxY - label.frame.halfHeight
-      addChild(label)
-    }
-    
-    initScene()
-    initPlatform()
-    initPlayer()
-    initLabel()
-  }
-  
   override func didMove(to view: SKView) {
+  
+    func initSelf() {
+      
+      func initScene() {
+        physicsWorld.contactDelegate = self
+        anchorPoint = CGPoint.middle
+        physicsWorld.gravity = GRAV_DOWN
+      }
+      
+      func initPlatform() {
+        let platform = Platform3(color: .black, size: CGSize(width: 200, height: PLAT_HEIGHT))
+        
+        platform.physicsBody = SKPhysicsBody(
+          rectangleOf: platform.size,
+          affectedGravity: false,
+          category   : UInt32(2),
+          //collision  : UInt32(1),
+          contact    : UInt32(1),
+          restitution: 0
+        )
+        //      platform.physicsBody?.usesPreciseCollisionDetection = true
+        platform.name = "0"
+        platform.position.y = frame.minY + platform.size.halfHeight
+        platforms["0"] = platform
+        addChild(platform)
+      }
+      
+      func initPlayer() {
+        player.resetPB()
+        player.position.y = platforms["0"]!.frame.maxY + player.size.halfHeight
+        addChild(player)
+      }
+      
+      func initLabel() {
+        label.text = "adadfasdfasdfsadfas"
+        label.position.y = frame.maxY - label.frame.halfHeight
+        addChild(label)
+      }
+      
+      initScene()
+      initPlatform()
+      initPlayer()
+      initLabel()
+    }
+    
     initSelf()
     spawnTestPlatform()
   }
@@ -143,6 +138,19 @@ extension Winby3 {
   }
   
   override func update(_ currentTime: TimeInterval) {
+
+    func gameOver() {
+      guard let view = view else { fatalError("wtf is the view??") }
+      removeAllChildren()             // For label
+      view.presentScene(Winby3(size: size))
+    }
+    
+ 
+    if flag_shouldGameOver {
+      gameOver()
+      return
+    }
+    
     for platform in platforms.values {       // Keep platform at constant speed.
       if let cmd = platform.command { cmd() }
     }
@@ -155,37 +163,51 @@ extension Winby3 {
   }
 
   // func didBegin(_ contact:) { ... }
-  
+
   override func didSimulatePhysics() {
+    
+    func increaseScore() {
+      score += 1
+    }
+    
+    func maybeKillPlayer() -> Bool {
+      
+      guard let platform = flagdata_dspPlatform else { fatalError("wtf how.. should be in dbc") }
+      
+      let maxDepression = 5.f
+      let playerPoint = player.frame.point.bottomMiddle.y + frame.halfHeight
+      let platformPoint = platform.frame.point.topMiddle.y + frame.halfHeight
+      
+      if playerPoint < platformPoint - maxDepression {
+        return true
+      } else {
+        player.land(on: platform)
+        return false                           // Player lives and may get to score.
+      }
+    }
+    
+    func moveCameraDown() {
+      let y = player.position.y
+      let dy = y - frame.midY
+      // Fuck...ok try a counter of 30 and reset it
+      cam.moveDown(by: dy)
+    }
     
     // Check 1: To live or die
     if flag_doSecondKillCheck {
-      
-      func maybeKillPlayer() -> Bool {
-
-        guard let platform = flagdata_dspPlatform else { fatalError("wtf how.. should be in dbc") }
-        
-        let maxDepression = 5.f
-        let playerPoint = player.frame.point.bottomMiddle.y + frame.halfHeight
-        let platformPoint = platform.frame.point.topMiddle.y + frame.halfHeight
-        
-        if playerPoint < platformPoint - maxDepression {
-          return true
-        } else {
-          player.land(on: platform)
-          return false                           // Player lives and may get to score.
-        }
+      if maybeKillPlayer() {
+        guard let platform = flagdata_dspPlatform else { fatalError("wtf how... should be in dbc" ) }
+        player.die(from: platform)
       }
-      
-      if maybeKillPlayer() { player.die() }
-      
     }
     
     // Check 2: Landing:
     if flag_shouldLandOnPlatform {
       guard let platform = flagdata_platformTolandOn else { fatalError("wtf lol") }
       player.land(on: platform)
-      
+      if player.position.y > frame.midY {
+        moveCameraDown()
+      }
       
       // Check 3: Scoring
       guard player.isAlive else              { return }      // This may mess up death animations later on...

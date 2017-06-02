@@ -73,7 +73,7 @@ extension Winby3 {
     if result.isTrue {
       print("WINBY IS DEAD")
       debug("DEAD")
-      player.die()
+      player.die(from: platform)
       flag_skipThisFrameContact = true
     }
   }
