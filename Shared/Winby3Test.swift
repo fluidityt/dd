@@ -1,6 +1,7 @@
 //
 //  Winby3Test.swift
 
+
 import SpriteKit
 
 
@@ -59,7 +60,7 @@ extension Winby3 {
   
   func didBegin(_ contact: SKPhysicsContact) {
     
-    if flag_skipThisFrameContact { return }
+    if flag_skipThisFrameContact || flag_skipAllContacts{ return }
     
     guard let player   = findPlayer  (from: contact) else { return }
     guard let platform = findPlatform(from: contact) else { return }
@@ -76,6 +77,13 @@ extension Winby3 {
       player.die(from: platform)
       flag_skipThisFrameContact = true
     }
+  }
+
+  // // // // // //
+  func explode() {
+   // from side..
+    // with force...
+    
   }
 }
 

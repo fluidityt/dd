@@ -7,13 +7,18 @@ import SpriteKit
 // PLAYER
 //
 
+
 class Player3: SKSpriteNode {
   
   var platform: Platform3?
   
   var isAlive = true
   
-  let vec_jump = CGVector(dx: 0, dy: 100)
+  let NUM_JUMPS = 10
+  
+  lazy var jumps: Int = self.NUM_JUMPS
+  
+  let vec_jump = CGVector(dx: 0, dy: 80)
   
   init(color: SKColor, size: CGSize) { super.init(texture: nil, color: color, size: size) }
   
@@ -32,7 +37,13 @@ class Player3: SKSpriteNode {
   }
   
   func jump() {
+    if jumps <= 0 { return }
+    jumps -= 1
+    
     resetPB()
+    if let p = platform {
+      position.y = p.frame.point.topLeft.y + size.halfHeight
+    }
     position.y += 2 // Clear enough to not trigger contact.
     if let platform = platform {
       platform.isCarryingPlayer = false
@@ -44,6 +55,8 @@ class Player3: SKSpriteNode {
   }
 
   func land(on platform: Platform3) {
+    jumps = NUM_JUMPS
+    
     self.platform = platform
     platform.isCarryingPlayer = true
     resetPB()
@@ -103,35 +116,65 @@ class Platform3: SKSpriteNode {
   lazy var vec_left: CGVector  = CGVector(dx: -self.vec_speed, dy: 0)
   lazy var vec_right: CGVector = CGVector(dx:  self.vec_speed, dy: 0)
   
+  func resetPB(oldPB: SKPhysicsBody) {
+    let pb = SKPhysicsBody(rectangleOf: size,
+                           affectedGravity: false,
+                           category: UInt32(2),
+                           collision: UInt32(1) ,
+                           contact: UInt32(1)); do {
+                            pb.allowsRotation = false
+                            pb.mass = 45
+                            pb.usesPreciseCollisionDetection = true
+                            pb.restitution = 0
+    }
+    pb.velocity = oldPB.velocity
+    physicsBody = pb
+  }
+  
   required init?(coder aDecoder: NSCoder) {    fatalError("init(coder:) has not been implemented")  }
 };
 
 final class Camera {
   
   private var scene: Winby3
+  private var amount = 0.f
+  private var divisor = 30.f
   private var counter = 0
   
   init(scene: Winby3) {
     self.scene = scene
   }
   
-  func moveDown(by amount: CGFloat) {
-    counter = amount.i
+  func shouldUpdate() -> Bool {
+    if counter > 0 { return true }
+    else { return false }
+  }
+  
+  func moveDown() {
+    let y = scene.player.position.y + scene.frame.height
+    let dy = y - scene.frame.midY + scene.frame.height
+    
+    amount = dy
+    
+    counter = dy.i
   }
   
   func update() {
-    if counter > 0 {
-      for node in scene.children {
-        if node is SKLabelNode { continue }
-        node.position.y -= 1
-        counter -= 1
-      }
+    counter -= 1
+    for node in scene.children {
+      if node is SKLabelNode { continue }
+      node.position.y -= 1
+      guard let pb = node.physicsBody else { continue }
+      guard let platform = node as? Platform3 else { continue }
+      platform.resetPB(oldPB: pb)
+      debug("platform set")
     }
   }
+  
 };
 
 //
-// WINBY 3
+// MARK: - WINBY 3:
 //
 let label = SKLabelNode(fontNamed: "Chalkduster")
 func debug(_ text: String) { label.text = text }
@@ -146,6 +189,8 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   var score = 0
   
+  var nextLine = 1                             // Used for positioning of next node, as well as name of node to keep track of in dict, and for collisions.
+  
   let COLOR1 = SKColor.black
   
   let COLOR2 = SKColor.gray
@@ -154,12 +199,11 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   let GRAV_DOWN = CGVector(dx: 0, dy: -20)
   
-  var nextLine = 1                             // Used for positioning of next node, as well as name of node to keep track of in dict, and for collisions.
-  
   lazy var baseSpawnPos: CGPoint = CGPoint(x:0, y: self.player.frame.maxY + self.player.size.halfHeight + 1)
   
   var lastSpawnSide = "right"
   
+  // MARK: - Flags:
   /// Because everything should be resolved next frame regardless, and it could complicate loop logic for landing.
   var flag_skipThisFrameContact = false
   
@@ -167,12 +211,13 @@ class Winby3: SKScene, SKPhysicsContactDelegate {
   
   var flag_shouldGameOver = false // This flag doesn't get reset anywhere (except on new instance)
   
+  var flag_skipAllContacts = false // useful for animations and menus
+  
   var flag_shouldLandOnPlatform = false
   var flagdata_platformTolandOn: Platform3?
   
   /// Need to set this in didBegin() once player has been determined to be dead from  a vertical landing (or other vertical collision) to ensure that player does not die from a normal landing
   var flag_doSecondKillCheck = false // TODO: I really need to rename this =/
   var flagdata_dspPlatform: Platform3?
-  
   
 };

@@ -56,6 +56,7 @@ extension Winby3 {
       platform.position = getStartingPosition(for: platform)
       platform.constraints = [SKConstraint.positionY(SKRange(constantValue: platform.position.y))]
       platform.command = {
+        var pb: SKPhysicsBody { return platform.physicsBody! }
         
         let offset: CGFloat = {
           if platform.isCarryingPlayer { return platform.size.halfWidth/2 }
@@ -126,6 +127,7 @@ extension Winby3 {
     
     initSelf()
     spawnTestPlatform()
+    spawnTestPlatform()
   }
   
   override func mouseDown(with event: NSEvent) {
@@ -145,6 +147,9 @@ extension Winby3 {
       view.presentScene(Winby3(size: size))
     }
     
+    if cam.shouldUpdate() {
+      cam.update()
+    }
  
     if flag_shouldGameOver {
       gameOver()
@@ -185,13 +190,7 @@ extension Winby3 {
         return false                           // Player lives and may get to score.
       }
     }
-    
-    func moveCameraDown() {
-      let y = player.position.y
-      let dy = y - frame.midY
-      // Fuck...ok try a counter of 30 and reset it
-      cam.moveDown(by: dy)
-    }
+
     
     // Check 1: To live or die
     if flag_doSecondKillCheck {
@@ -206,7 +205,7 @@ extension Winby3 {
       guard let platform = flagdata_platformTolandOn else { fatalError("wtf lol") }
       player.land(on: platform)
       if player.position.y > frame.midY {
-        moveCameraDown()
+        cam.moveDown()
       }
       
       // Check 3: Scoring
@@ -219,9 +218,8 @@ extension Winby3 {
       flag_shouldSpawnNewPlatform = true
       
       // Check 4: Spawning:
-      if flag_shouldSpawnNewPlatform {
-        spawnTestPlatform()
-      }
+      if flag_shouldSpawnNewPlatform { spawnTestPlatform() }
+      
     }
   }
 
@@ -264,6 +262,10 @@ extension Winby3 {
     resetFlags()
     keepInBounds(player: player)
   
+    if cam.shouldUpdate() {
+      cam.update()
+    }
+    
     testingAtFinish()
   }
 }
