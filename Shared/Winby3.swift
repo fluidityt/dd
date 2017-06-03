@@ -7,12 +7,15 @@ import SpriteKit
 // PLAYER
 //
 
-
 class Player3: SKSpriteNode {
+  
+  var landingCounter = 0
   
   var platform: Platform3?
   
   var isAlive = true
+  
+  var isKillable = false
   
   let NUM_JUMPS = 10
   
@@ -41,13 +44,9 @@ class Player3: SKSpriteNode {
     jumps -= 1
     
     resetPB()
-    if let p = platform {
-      position.y = p.frame.point.topLeft.y + size.halfHeight
-    }
-    position.y += 2 // Clear enough to not trigger contact.
-    if let platform = platform {
-      platform.isCarryingPlayer = false
-    }
+    
+    position.y += 2   // Clear enough to not trigger contact.
+    if let platform = platform { platform.isCarryingPlayer = false }
     platform = nil
     guard let pb = physicsBody else { fatalError() }
     pb.affectedByGravity = true
@@ -57,12 +56,16 @@ class Player3: SKSpriteNode {
   func land(on platform: Platform3) {
     jumps = NUM_JUMPS
     
+    landingCounter += 1
+    
     self.platform = platform
     platform.isCarryingPlayer = true
     resetPB()
     guard let pb = physicsBody else { fatalError() }
     pb.affectedByGravity = false
     position.y = platform.frame.point.topMiddle.y + size.halfHeight
+    
+
   }
   
   func die(from platform: Platform3) {
@@ -117,8 +120,18 @@ class Platform3: SKSpriteNode {
   lazy var vec_right: CGVector = CGVector(dx:  self.vec_speed, dy: 0)
   
   required init?(coder aDecoder: NSCoder) {    fatalError("init(coder:) has not been implemented")  }
+  
+  func resetPlayerPositon() {
+    if isCarryingPlayer {
+      let player = (scene as! Winby3).player
+      player.position.y = frame.point.topMiddle.y + player.size.halfHeight + 1
+    }
+  }
 };
 
+//
+// MARK: - Cmaera:
+//
 final class Camera {
   
   private var scene: Winby3
@@ -129,7 +142,7 @@ final class Camera {
   
   func shouldUpdate() -> Bool {
   
-  return false
+    return false
   }
   
   func moveDown() {

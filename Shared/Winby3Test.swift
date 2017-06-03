@@ -24,6 +24,7 @@ extension Winby3 {
   
   private func shouldKillWinby(player: Player3, platform: Platform3) -> IsWinbyDead? {
     
+    
     let minimumFooting = 5.f
     let maxDepression = 5.f
     
@@ -49,7 +50,9 @@ extension Winby3 {
     }
     
     // Base case (player is alive and on platform):
-    debug("not dead | \(score)")
+    // debug("not dead | \(score)")
+    
+    if platform == player.platform { return false }
     
     flag_shouldLandOnPlatform = true
     flagdata_platformTolandOn = platform
@@ -74,7 +77,9 @@ extension Winby3 {
     if result.isTrue {
       print("WINBY IS DEAD")
       debug("DEAD")
-      player.die(from: platform)
+      if player.isKillable == false {
+        player.die(from: platform)
+      }
       flag_skipThisFrameContact = true
     }
   }

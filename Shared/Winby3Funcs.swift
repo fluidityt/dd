@@ -6,6 +6,18 @@ import SpriteKit
 
 extension Winby3 {
   
+  func pushTest() {
+    for node in children {
+      if node is SKLabelNode { continue }
+      node.position.y -= 5
+    }
+    
+    if let platform = player.platform {
+      platform.resetPlayerPositon()
+      debug("\(Int(player.position.y))")
+    }
+  }
+  
   func spawnTestPlatform() {
 
     func addPlatformToDict(_ platform: Platform3) {
@@ -219,7 +231,11 @@ extension Winby3 {
   override func didFinishUpdate() {
   
     func testingAtFinish() {
-
+      // debug("\(player.landingCounter)")
+    }
+    
+    if flag_shouldLandOnPlatform {
+      pushTest()
     }
     
     func resetFlags() {
