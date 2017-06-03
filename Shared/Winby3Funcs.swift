@@ -147,10 +147,6 @@ extension Winby3 {
       view.presentScene(Winby3(size: size))
     }
     
-    if cam.shouldUpdate() {
-      cam.update()
-    }
- 
     if flag_shouldGameOver {
       gameOver()
       return
@@ -204,9 +200,6 @@ extension Winby3 {
     if flag_shouldLandOnPlatform {
       guard let platform = flagdata_platformTolandOn else { fatalError("wtf lol") }
       player.land(on: platform)
-      if player.position.y > frame.midY {
-        cam.moveDown()
-      }
       
       // Check 3: Scoring
       guard player.isAlive else              { return }      // This may mess up death animations later on...
@@ -262,9 +255,6 @@ extension Winby3 {
     resetFlags()
     keepInBounds(player: player)
   
-    if cam.shouldUpdate() {
-      cam.update()
-    }
     
     testingAtFinish()
   }

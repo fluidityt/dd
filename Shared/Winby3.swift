@@ -116,59 +116,29 @@ class Platform3: SKSpriteNode {
   lazy var vec_left: CGVector  = CGVector(dx: -self.vec_speed, dy: 0)
   lazy var vec_right: CGVector = CGVector(dx:  self.vec_speed, dy: 0)
   
-  func resetPB(oldPB: SKPhysicsBody) {
-    let pb = SKPhysicsBody(rectangleOf: size,
-                           affectedGravity: false,
-                           category: UInt32(2),
-                           collision: UInt32(1) ,
-                           contact: UInt32(1)); do {
-                            pb.allowsRotation = false
-                            pb.mass = 45
-                            pb.usesPreciseCollisionDetection = true
-                            pb.restitution = 0
-    }
-    pb.velocity = oldPB.velocity
-    physicsBody = pb
-  }
-  
   required init?(coder aDecoder: NSCoder) {    fatalError("init(coder:) has not been implemented")  }
 };
 
 final class Camera {
   
   private var scene: Winby3
-  private var amount = 0.f
-  private var divisor = 30.f
-  private var counter = 0
-  
+
   init(scene: Winby3) {
     self.scene = scene
   }
   
   func shouldUpdate() -> Bool {
-    if counter > 0 { return true }
-    else { return false }
+  
+  return false
   }
   
   func moveDown() {
-    let y = scene.player.position.y + scene.frame.height
-    let dy = y - scene.frame.midY + scene.frame.height
-    
-    amount = dy
-    
-    counter = dy.i
+  
+  
   }
   
   func update() {
-    counter -= 1
-    for node in scene.children {
-      if node is SKLabelNode { continue }
-      node.position.y -= 1
-      guard let pb = node.physicsBody else { continue }
-      guard let platform = node as? Platform3 else { continue }
-      platform.resetPB(oldPB: pb)
-      debug("platform set")
-    }
+  
   }
   
 };
