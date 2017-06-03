@@ -10,6 +10,7 @@ extension Winby3 {
     for node in children {
       if node is SKLabelNode { continue }
       node.position.y -= 5
+      if node is Platform3 { node.constraints = [SKConstraint.positionY(SKRange(constantValue: node.position.y))] }
     }
     
     if let platform = player.platform {
